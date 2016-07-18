@@ -1,0 +1,201 @@
+clear all; 
+clc;
+
+%% load
+I=imread('tube10.jpg'); 
+
+if (ndims(I)==3)  
+    I_gray=rgb2gray(I);
+else
+    I_gray=I;
+end
+
+%% Histo of probalities pixels
+I=I_gray;
+[m,n]=size(I);
+L=256;
+histo=zeros(L,1);
+
+for i=1:m
+    for j=1:n
+        histo(I(i,j)+1)=histo(I(i,j)+1)+1;
+    end
+end
+
+histo1=histo/(m*n);
+
+figure;
+subplot(2,1,1);
+colormap gray;
+imagesc(I);
+%imshow(I);
+subplot(2,1,2)
+plot(histo1);
+
+%% filtre base-pass gaussian (Glpf:Gaussian low pass filter)
+fenetre = 80;
+l=round(fenetre/10);
+Iglpf=zeros(m,n,l); % save the data of the figure
+
+% iteration for find the best parameter
+% for k=1:l
+%     for seuil=10:10:100
+%         Iglpf(:,:,k)=gaussian_lowpass_filter(I,seuil);
+%     end
+% end
+    
+Iglpf_3 = gaussian_lowpass_filter(I,20);
+G=uint8(real(Iglpf_3));
+%G=histeq(G);
+
+%imtool(uint8(G));
+figure;
+colormap gray;
+imagesc(G);
+title('image after glpf');
+
+histo=zeros(L,1);
+
+% histo after gaussian filter low pass
+for i=1:m
+    for j=1:n
+        histo(G(i,j)+1)=histo(G(i,j)+1)+1;
+    end
+end
+histo2=histo/(m*n);
+
+figure;
+subplot(2,1,1);
+colormap gray;
+imagesc(G);
+%imshow(I);
+subplot(2,1,2)
+plot(histo2);
+
+%% otus applied at the figure after filter
+
+[T1,T2]=otus3level(G);
+for i=1:n
+    meanG=mean(G(:,i));
+    if meanG>T2
+        resG(:,i)=255;
+    elseif meanG<=T1
+        resG(:,i)=0;
+    else
+        resG(:,i)=128;
+    end
+end
+figure;
+subplot(2,1,1);
+colormap gray;
+imagesc(I);
+title('image originale');
+subplot(2,1,2);
+colormap gray
+imagesc(resG);
+title('resIglpf based on mean of each Colone');
+
+%% calculer la moynne ponderee de chaque colonne
+weight=[0.15,0.25, 0.20, 0.25,0.15];
+Iweighted=calcul_Iweighted(G,weight);
+
+% % tester otus3level sur l'image
+% [T1a, T2a] = otus3level(Iweighted);
+% T1a 
+% T2a
+% 
+% resG3=Iweighted;
+% meanIw=zeros(1,n);
+% for i=1:n
+%     meanIw(i)=mean(Iweighted(:,i));
+% end
+% 
+% for j=1:n
+%     if meanIw(j)>T2a
+%         resG3(:,j)=255;
+%     elseif meanIw(j)<=T1a
+%         resG3(:,j)=0;
+%     else
+%         resG3(:,j)=128;
+%     end
+% end
+% figure;
+% subplot(2,1,1);
+% colormap gray;
+% imagesc(I);
+% title('image originale');
+% subplot(2,1,2);
+% colormap gray
+% imagesc(resG3);
+% 
+% figure;
+% imtool(uint8(real(resG3)));
+
+%% 
+length = 10;
+N = fix(n/length);
+%Iglpf=double(Iglpf);
+Irec=otus_block(Iweighted,N);
+
+figure;
+colormap gray;
+imagesc(Irec);
+
+
+% 
+% for k=1:20
+%     se = strel('disk',k);
+%     G1 = imclose(G,se);
+%     figure;
+%     colormap gray
+%     imagesc(G1);
+%     title(['close operation se = ', num2str(k)]);
+% end
+
+%G1_tube10 = imclose(G,strel('disk',1));
+%save G1_tube10;
+
+%% imclose operation closed
+G2_tube10 = imclose(G,strel('disk',5));
+%save G2;
+figure;
+subplot(2,1,1);
+colormap gray;
+imagesc(G);
+title('image after glpf');
+subplot(2,1,2)
+imagesc(G2_tube10);
+title('image after operation of close');
+
+%% operation closed after gaussian filter 
+
+[T1b, T2b] = otus3level(G2_tube10);
+T1b
+T2b
+
+new_G=I;
+moy=zeros(1,n);
+for j=1:n
+    moy(j)=mean(G2_tube10(:,j));
+    moy(j)=moy(j)-80;
+end
+
+for j=1:n
+    if moy(j)>T2b
+        new_G(:,j)=255;
+    elseif moy(j)<=T1b
+        new_G(:,j)=0;
+    else
+        new_G(:,j)=128;
+    end
+end
+
+figure;
+subplot(2,1,1);
+imagesc(G2_tube10);
+title('image after glpf');
+subplot(2,1,2) 
+colormap gray;
+imagesc(new_G);
+title('image after close and 3levesOtsu');
+

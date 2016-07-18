@@ -1,0 +1,184 @@
+
+% dynamic multi-swarm pso with local research
+% output: best position and the smallest value of function
+
+%% calculate the histogramme
+I=G;
+[m,n]=size(I); 
+L=256;
+histo=zeros(L,1);
+
+for i=1:m
+    for j=1:n
+        histo(I(i,j)+1)=histo(I(i,j)+1)+1;
+    end
+end
+histo=histo/(m*n);
+
+%% initialisation de parametres
+D=10;          % dimension de espace
+N=40;          %粒子群规模 
+interationMax=150;    % max nombre de iteration
+%w=0.7298;      % poids inertie (inertia weight)
+c1=1.49618;    % learning facteur (acceleration constant)
+c2=1.49618;    % learning facteur (acceleration constant)
+
+%% initialisation aleatoire de la position et la vitess de particule
+X=1+rand(1,N)*9; 
+V=rand(1,N); 
+
+%% use otus methode as the fitness of the best position
+pbest=zeros(N,2); % initiallize the matrice for store the best positions 
+gbest1=0;         % initialize the best position of particule 1
+gbest2=0;         % initialize the best position of particule 1
+%mid=0; 
+W1=zeros(0,N);    
+W2=zeros(0,N);
+U1=zeros(0,N);
+U2=zeros(0,N);
+var=zeros(0,N);
+w=zeros(0,D);
+wmax=0.9; wmin=0.4; 
+Pbest=10^8;
+pix=0:255;
+
+
+for k=1:D 
+    %k=1
+    w(k)=wmax-(wmax-wmin)*k/D; 
+    for i=1:N 
+        t=length(find(X(i)>=pix)); 
+        w1=0; 
+        u1=0; u2=0;
+        for j=1:t 
+            w1=w1+histo(j); % w1 = w1+histo(i)
+            u1=u1+(j-1)*histo(j); % u1=u1+
+        end
+        if w1==0
+            u1=0;
+        else
+            u1=u1/w1;
+        end
+
+        W1(i)=w1; 
+        U1(i)=u1/w1; 
+        w2=1-w1;
+        W2(i)=w2; 
+        
+        for r=t+1:L
+            u2=u2+(r-1)*histo(r);
+        end
+    
+        if w2==0
+            u2=0;
+        else
+            u2=u2/w2;
+        end
+        U2(i)=u2; 
+        
+% calculate the variance between two classes
+        var(i)=W1(i)*W2(i)*((U2(i)-U1(i))^2); 
+    end
+    
+    for i=1:N
+        if pbest(i,2)<var(i) 
+           pbest(i,2)=var(i);   % best postion for particule i           
+           pbest(i,1)=X(i);     % position of particule i
+        end 
+    end 
+% update the best position
+    [maxVar,idx]=max(var); 
+    if maxVar>=gbest2 
+        gbest2=maxVar; 
+        gbest1=X(idx); 
+    end 
+    mid(k)=gbest2;
+    
+end 
+
+%calculate the middle generation of each iteration
+for i=1:N 
+    V(i,:)=w*V(i)+c1*rand*(pbest(i)-X(i))+c2*rand*(gbest1-X(i)); 
+    mid(i)=X(i)+V(i);  %中间代mid 
+end 
+
+% select the best between the middle generation and its parent
+for i=1:N 
+    if violent(X(i),D)==0 && violent(mid(i),D)>0 
+        next(i)=X(i); 
+    end 
+    % if both are not in violation, choose the smaller fitness one
+    if violent(X(i),D)==0 && violent(mid(i),D)==0 
+            if fitness(X(i),D)<=fitness(mid(i),D) 
+                next(i)=X(i); 
+            else 
+                next(i)=mid(i); 
+            end 
+    end 
+
+    if violent(X(i),D)>0 && violent(mid(i),D)==0 
+        next(i)=mid(i); 
+    end 
+    % if both ar in violation, choose the smaller violent one 
+    if violent(X(i),D)>0 && violent(mid(i),D)>0 
+            if violent(X(i),D)<=violent(mid(i),D) 
+                next(i)=X(i); 
+            else 
+                next(i)=mid(i); 
+            end 
+    end 
+end 
+% update swarm
+X=next; 
+
+%% main iteration
+for t=1:interationMax 
+    % update individual and global best position
+    for i=1:N 
+        if fitness(X(i),D)<fitness(pbest(i),D) 
+            pbest(i)=X(i); 
+        end 
+        if fitness(pbest(i),D)<Pbest && violent(pbest(i),D)==0 
+            gbest=pbest(i); 
+        end 
+    end 
+    % calculate the middle generation
+    for i=1:N 
+        for j=1:D 
+            V(i,j)=w*V(i,j)+c1*rand*(pbest(i,j)-X(i,j))+c2*rand*(gbest(j)-X(i,j)); 
+            mid(i,j)=X(i,j)+V(i,j);  
+        end 
+    end 
+    
+    % select the best between the middle generation and its parent
+    for i=1:N 
+        
+        if violent(X(i,:),D)==0 && violent(mid(i,:),D)>0 
+            next(i,:)=X(i,:); 
+        end 
+        
+        if violent(X(i,:),D)==0 && violent(mid(i,:),D)==0 
+                if fitness(X(i,:),D)<=fitness(mid(i,:),D) 
+                    next(i,:)=X(i,:); 
+                else 
+                    next(i,:)=mid(i,:); 
+                end 
+        end 
+       
+        if violent(X(i,:),D)>0 && violent(mid(i,:),D)==0 
+            next(i,:)=mid(i,:); 
+        end 
+      
+        if violent(X(i,:),D)>0 && violent(mid(i,:),D)>0 
+                if violent(X(i,:),D)<=violent(mid(i,:),D) 
+                    next(i,:)=X(i,:); 
+                else 
+                    next(i,:)=mid(i,:); 
+                end 
+        end 
+    end 
+    X=next; 
+end 
+%%
+
+Pbest 

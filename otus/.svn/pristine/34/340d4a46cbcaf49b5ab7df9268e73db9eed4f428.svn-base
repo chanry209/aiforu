@@ -1,0 +1,55 @@
+function [IDX,T1,T2,T3]=multi_otuops(I,D,M)
+%I=G;
+I=double(I);
+[m,n]=size(I);
+[T1,varianceB]=otus_ops(I,D,M);
+
+% calculer les moyennes et les variance
+c1=I(I<=T1);
+c2=I(I>T1);
+[u1,u2,w1,w2,var1,var2,varB] = calcul_var(I,T1);
+
+if var1>var2
+    new_class=c1;
+    new_u=u1;
+    new_w=w1;
+    new_varT=var1;
+    rest_var=var2;
+else
+    new_class=c2;
+    new_u=u2;
+    new_w=w2;
+    new_varT=var2;
+    rest_var=var1;
+end
+
+[T2,varianceB2]=otus_ops(new_class,D,M);
+c3=new_class(new_class<=T2);
+c4=new_class(new_class>T2);
+
+[u3,u4,w3,w4,var3,var4,varB2] = calcul_var(new_class,T2);
+
+maxVar=max(max(rest_var,var3),var4);
+
+if var1==maxVar
+    [T3,varianceB3]=otus_ops(c1,D,M);
+elseif var2==maxVar
+    [T3,varianceB3]=otus_ops(c2,D,M);
+elseif var3==maxVar
+    [T3,varianceB3]=otus_ops(c3,D,M);
+else 
+    [T3,varianceB3]=otus_ops(c4,D,M);
+end
+
+T1
+T2
+T3
+
+seuils=sort([T1,T2,T3]);
+
+IDX = ones(size(I))*4;
+IDX(I<=seuils(1)) = 1;
+IDX(I>seuils(1) & I<=seuils(2)) = 2;
+IDX(I>seuils(2) & I<=seuils(3)) = 3;
+IDX(I>seuils(3)) = 4;
+end

@@ -1,0 +1,55 @@
+clear; 
+close all;
+clc;
+
+%% load
+addpath C:\Users\qian\Dropbox\stage\Electrophorese\
+folder = 'C:\Users\qian\Dropbox\stage\Electrophorese\profils\Etude avec Gerard\P\';
+files=dir([folder '*.mat']);
+
+data={'fichier' 'givenBands' 'bands' 'match bands' 'TF' 'FP' 'FN bandes oublies' 'FP bandes ajoutes' 'TN', 'taux de vrai bandes'};
+
+glpf_fc=20;
+rectangleSize=[5,10];
+weight=[0.15,0.25, 0.20, 0.25,0.15];
+nbrBlock=10;
+D=4;
+M=40;
+
+for i=1:length(files)
+    i=1
+      g=load([folder files(i).name]);       % band
+      n=find(files(i).name=='.',1,'first');
+      n1=find(files(i).name=='_',1,'first');
+      imagename=...
+          ['C:\Users\qian\Dropbox\stage\Electrophorese\profils\Etude avec Gerard\P\' files(i).name(1:n-1) '.png'];
+      [infos]=sscanf(files(i).name(n1+2:end-4),'%d_%d-%dx%d-%d');
+      I=imrotate(imread(imagename),infos(1)/10); % figure im contains many tubes
+ 
+      G=preTraitement(I,glpf_fc,rectangleSize,weight);
+      close all;
+      resI=otuops(G,D,M,nbrBlock);
+      
+      
+      data{i+1,1}=files(i).name(1:end-3);
+      data{i+1,2}=g.bands;
+      
+      figure;
+      subplot(2,1,1);
+      imshow(I);
+      title(['Figure originale ',num2str(files(i).name(1:n-1))])
+      subplot(2,1,2);
+      imshow(resI);
+      title(['Figure after Otsu&PSO with ',num2str(nbrBlock),'blocks',...
+          'and D= ', num2str(D),' M=',num2str(M)]);
+      
+      pBands=size((g.bands),2);
+      for j=1:pBands
+          bandLine=fix(g.bands(j));
+          hold on;
+          line([bandLine bandLine],[1 size(resI,2)],'Color',[1 0 0],'LineStyle','--');
+      end
+      
+    
+
+end

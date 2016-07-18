@@ -1,0 +1,75 @@
+function resI=otuops(I,D,M,nbrBlock)
+%% load
+%I=imread('02-10-2015  1_A0_479-532x145-664.png');
+%% Image preprocessing
+% glpf_fc=25;
+% rectangleSize=[3,5];
+% weight=[0.15,0.25, 0.20, 0.25,0.15];
+% G=preTraitement(I,glpf_fc,rectangleSize,weight);
+% 
+% close all;
+%% diverse image into N blocks
+nbrBlock=40;
+[m,n]=size(I);
+length = fix(n/nbrBlock);
+block=zeros(m,length,nbrBlock);
+
+for i=1:nbrBlock     
+    block(:,:,i)=I(:,(i-1)*length+1:i*length);
+end
+
+%% use otus and ops methodes for each block 
+% D=2; 
+% M=20;
+for k=1:nbrBlock
+    [IDX,T1,T2,T3]=multi_otuops(block(:,:,k),D,M);
+    [r,c]=size(IDX);
+    prob_1=0;
+    prob_2=0;
+    prob_3=0;
+    prob_4=0;
+
+    for j=1:c
+        for i=1:r
+            if IDX(i,j)==1
+                prob_1=prob_1+1;
+            elseif IDX(i,j)==2
+                prob_2=prob_2+1;
+            elseif IDX(i,j)==3
+                prob_3=prob_3+1;
+            else
+                prob_4=prob_4+1;
+            end
+        end
+        prob_1=prob_1/(r*c);
+        prob_2=prob_2/(r*c);
+        prob_3=prob_3/(r*c);
+        prob_4=prob_4/(r*c);
+        class=max(max(max(prob_1,prob_2),prob_3),prob_4);
+
+        if prob_1==class
+            block(:,j,k)=0;
+        elseif prob_3==class
+            block(:,j,k)=85;
+        elseif prob_2==class
+            block(:,j,k)=170;
+        else
+            block(:,j,k)=255;
+        end
+    end
+
+
+%% reconstruction image by blocks
+    resI=G;
+    for a=1:nbrBlock     
+        resI(:,(a-1)*length+1:a*length)=block(:,:,a);
+    end
+end
+figure;
+subplot(2,1,1);
+imshow(rgb2gray(I));
+title('image originale');
+subplot(2,1,2);
+imshow(resI);
+title('figure N479 D=2,M=20;40blocks');
+end

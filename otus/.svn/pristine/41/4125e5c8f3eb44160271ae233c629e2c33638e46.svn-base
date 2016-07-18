@@ -1,0 +1,218 @@
+clear all; 
+clc;
+
+%% load
+I=imread('tube10.jpg'); 
+
+if (ndims(I)==3)  
+    I_gray=rgb2gray(I);
+else
+    I_gray=I;
+end
+
+%% Histo of probalities pixels
+I=I_gray;
+[m,n]=size(I);
+L=256;
+histo=zeros(L,1);
+
+for i=1:m
+    for j=1:n
+        histo(I(i,j)+1)=histo(I(i,j)+1)+1;
+    end
+end
+
+histo1=histo/(m*n);
+
+figure;
+subplot(2,1,1);
+colormap gray;
+imagesc(I);
+%imshow(I);
+subplot(2,1,2)
+plot(histo1);
+
+%% distribution of pixel of each column and the mean of line
+% this operation is for observer distribution and the type of bruit
+meanI=zeros(1,n);
+for j=1:n
+    meanI(j)=mean(I(:,j));
+end
+
+figure;
+subplot(2,1,1);
+colormap gray;
+imagesc(I);
+subplot(2,1,2)
+plot(meanI);
+
+%% Ignore the highlights  (top 20%)
+col=zeros(1,n);
+Inew=I;
+for j=1:n
+    temp=sort(unique(I(:,j)));
+    length=size(temp,1);
+    threshold=temp(round(0.2*length));
+    
+    for i=1:m
+        if Inew(i,j)>threshold
+            Inew(i,j)=meanI(j);
+        end
+    end
+end
+
+figure;
+subplot(2,1,1);
+imshow(I);
+subplot(2,1,2)
+imshow(Inew);
+title('image after ignore the highlights');
+
+% increases the contrast of image by adjust image intensity values
+Inew2=imadjust(Inew,[0.05,0.95]);
+%Inew2=imadjust(Inew);
+
+figure;
+subplot(2,1,1);
+imshow(Inew);
+subplot(2,1,2)
+imshow(Inew2);
+title('image after increase contrast');
+
+Inew=Inew2;
+%% filtre base-pass gaussian (Glpf:Gaussian low pass filter)
+fenetre = 80;
+l=round(fenetre/10);
+
+Iglpf = gaussian_lowpass_filter(Inew,20);
+G=uint8(real(Iglpf));
+
+% Enhance contrast using histogram equalization.
+G=histeq(G);          
+
+%imtool(uint8(G));
+figure;
+subplot(2,1,1);
+imshow(Inew);
+subplot(2,1,2)
+imshow(G);
+title('image after ignore+glpf+equalization');
+
+%% weighted operation
+% weight=[0.15,0.25, 0.20, 0.25,0.15];
+% w=weight;
+% sumW=sum(weight)
+% long=fix(m/10);
+% Iweighted=G;
+% for i=1:m
+%     for j=1:n
+%         if i<long
+%             Iweighted(i,j)=G(i,j).*w(1);
+%         elseif  long<=i&&i<4*long
+%             Iweighted(i,j)=G(i,j).*w(2);
+%         elseif  4*long<=i&&i<6*long
+%             Iweighted(i,j)=G(i,j).*w(3);
+%         elseif  6*long<=i&&i<9*long
+%             Iweighted(i,j)=G(i,j).*w(4);
+%         else
+%             Iweighted(i,j)=G(i,j).*w(5);
+%         end
+%     end        
+% end
+% 
+% G2=Iweighted;
+% G2=uint8(real(G2));
+% 
+% figure;
+% subplot(2,1,1);
+% imshow(Inew);
+% subplot(2,1,2)
+% colormap gray;
+% imagesc(G2);
+% title('image after weighted');
+
+
+%% otus applied at the figure after filter
+
+%[IDX,T1,T2]=otus3level(G);
+% G=G2;
+[IDX,T1,T2,T3]=otus4level(G);
+
+% the probas of classification for each column
+resG=G;
+[r,c]=size(IDX);
+prob_1=0;
+prob_2=0;
+prob_3=0;
+prob_4=0;
+
+for j=1:c
+    for i=1:r
+        if IDX(i,j)==1
+            prob_1=prob_1+1;
+        elseif IDX(i,j)==2
+            prob_2=prob_2+1;
+        elseif IDX(i,j)==3
+            prob_3=prob_3+1;
+        else
+            prob_4=prob_4+1;
+        end
+    end
+    prob_1=prob_1/(r*c);
+    prob_2=prob_2/(r*c);
+    prob_3=prob_3/(r*c);
+    prob_4=prob_4/(r*c);
+    class=max(max(max(prob_1,prob_2),prob_3),prob_4);
+    if prob_1==class
+        resG(:,j)=0;
+    elseif prob_2==class
+        resG(:,j)=85;
+    elseif prob_3==class
+        resG(:,j)=170;
+    else
+        resG(:,j)=255;
+    end
+end
+        
+        
+figure;
+subplot(3,1,1);
+imshow(I_gray);
+title('image originale');
+subplot(3,1,2);
+imshow(G);
+title('image after pre-traitment');
+subplot(3,1,3);
+imshow(resG);
+title('image seg based on probas of each Colone');
+
+
+%% otus applied at the figure after filter
+%  test based on mean of each colum
+resG2=G;
+
+for i=1:n
+    meanG=mean(G(:,i));
+    
+    if meanG<T1
+        resG2(:,i)=0;
+    elseif meanG>=T1 && meanG<T2
+        resG2(:,i)=85;
+    elseif meanG>=T2 && meanG<T3
+        resG2(:,i)=170;
+    else
+        resG2(:,i)=255;
+    end
+end
+
+figure;
+subplot(3,1,1);
+imshow(G);
+title('image after pre-traitment');
+subplot(3,1,2);
+imshow(resG);
+title('image seg based on probas of each Colone');
+subplot(3,1,3);
+imshow(resG2);
+title('image seg based on mean of each Colone');
+

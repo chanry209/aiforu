@@ -1,0 +1,191 @@
+function res=otus_ops2(I,D,M)
+
+%% calculate the histogramme
+
+[m,n]=size(I); 
+L=256;
+histo=zeros(L,1);
+
+for i=1:m
+    for j=1:n
+        histo(I(i,j)+1)=histo(I(i,j)+1)+1;
+    end
+end
+histo=histo/(m*n);
+%% initialisation the parametres
+position1 = 20;    %粒子1初始位置 
+position2 = 200;   %粒子2初始位置 
+Vmax = 2;   %最大速度 
+Vmin = -2;  %最小速度 
+v1 = 1;     %粒子1初始速度 
+v2 = 1;     %粒子2初始速度 
+c1 = 2;     %认知 
+c2 = 2;     %社会 
+%a = 0.92;   %惯性因子 
+p1 = 0; 
+p2 = 0; 
+Gbest = 10; 
+mid   = 0;  %上一个全局最优 为了计算进化度 
+D = 10;
+M = 20; 
+X1 = zeros(1,M); 
+W = zeros(1,M); 
+V = zeros(1,M); 
+X2 = zeros(1,M); 
+l1=0;
+l2=0;
+
+%% calculate the threshold by otus and pso methode
+for k = 1:D; 
+    k=1
+    w1 = 0;u1=0;u2=0; 
+    i = fix(position1);               %粒子1 
+    
+    for j=1:i; 
+        w1=w1+histo(j); % w1 = w1+histo(i)
+        u1=u1+(j-1)*histo(j); % u1=u1+
+    end 
+    if w1==0
+        u1=0;
+    else
+        u1=u1/w1;
+    end
+    
+    w2=1-w1;
+    for j=i+1:L
+        u2=u2+(j-1)*histo(j);
+    end
+
+    if w2==0
+        u2=0;
+    else
+        u2=u2/w2;
+    end
+% calculate the variance between two classes
+    var1=w1*w2*(u1-u2)^2;
+%%%----------------------------------------------------------------------- 
+    w1=0;u1=0;u2=0; 
+    i = fix(position2);               %粒子1 
+    
+    for j=1:i; 
+        w1=w1+histo(j); % w1 = w1+histo(i)
+        u1=u1+(j-1)*histo(j); % u1=u1+
+    end
+    if w1==0
+        u1=0;
+    else
+        u1=u1/w1;
+    end
+    
+    w2=1-w1;
+    for j=i+1:L
+        u2=u2+(j-1)*histo(j);
+    end
+
+    if w2==0
+        u2=0;
+    else
+        u2=u2/w2;
+    end
+% calculate the variance between two classes
+    var2=w1*w2*(u1-u2)^2;    
+
+%%速度更新 
+
+%v1 = a*v1*(Gbest-p1)/Gbest+c1*dd*(p1 - pn1)+c2*ee*(Gbest- pn1);   %归一化全局相关速度更新1 
+%v1 = v1*(Gbest-p1)+ c1*dd*(p1 - pn1)+ c2*ee*(Gbest- pn1);         %直接全局相关速度更新1 
+%v1 = a*v1+c1*dd*(p1 - pn1)+c2*ee*(Gbest- pn1);                    %标准PSO速度更新1 
+%v1 = ((0.95-0.4)*(MM-l)/MM+0.4)*v1+c1*dd*(p1 - pn1)+c2*ee*(Gbest- pn1); %线性递减策略 
+%v1 = ((0.95-0.4)*(l/MM)^2+(0.4-0.95)*(2*l/MM)+0.95)*v1+c1*dd*(p1 - pn1)+c2*ee*(Gbest- pn1); %凹函数递减策略 
+v1 =  (0.9-0.5*(mid/Gbest)+0.1*(2*Gbest/(p1+p2)))*v1...
+    +c1*rand*(p1 - var1)+c2*rand*(Gbest- var1); %动态策略 
+
+if v1 > Vmax 
+    v1 = Vmax; 
+end 
+if v1 < Vmin 
+    v1 = Vmin; 
+end 
+%v2 = a*v2*(Gbest-p2)/Gbest+c1*dd*(p2 - pn2)+c2*ee*(Gbest- pn2);         %2速度更新 
+%v2 = v2*(Gbest-p2)+c1*dd*(p2 - pn2)+c2*ee*(Gbest- pn2);         %2速度更新 
+%v2 = a*v2+c1*dd*(p2 - pn2)+c2*ee*(Gbest- pn2);         %2速度更新 
+%v2 = ((0.95-0.4)*(MM-l)/MM+0.4)*v2+c1*dd*(p2 - pn2)+c2*ee*(Gbest- pn2); %线性递减策略 
+%v2 = ((0.95-0.4)*(l/MM)^2+(0.4-0.95)*(2*l/MM)+0.95)*v2+c1*dd*(p2 - pn2)+c2*ee*(Gbest- pn2);%凹函数递减策略 
+v2 = (0.9-0.5*(mid/Gbest)+0.1*(2*Gbest/(p1+p2)))*v2+...
+    c1*rand*(p2 - var2)+c2*rand*(Gbest- var2); %动态策略 
+
+if v2 > Vmax 
+    v2 = Vmax; 
+end
+if v2 < Vmin 
+    v2 = Vmin; 
+end 
+%%位置更新 
+position1 = position1 + v1; 
+position2 = position2 + v2; 
+%end; 
+if position1 >256 
+    position1 = 256; 
+end 
+if position2 >256 
+    position2 = 256; 
+end 
+if position1 <1 
+    position1 = 1; 
+end;  
+if position2 <1 
+    position2 = 1; 
+end 
+%%最优值选择 
+if p1 < var1 
+    p1 = var1; 
+end;
+if p2 < var2 
+    p2 = var2; 
+end 
+if (p1 == p2)  
+    break;     
+end 
+mid = Gbest; 
+if Gbest < p1 
+    Gbest = p1; 
+end 
+if Gbest < p2 
+    l1   = k; 
+    l2   = position2; 
+    Gbest = p2; 
+end 
+ 
+W(k) = position1; 
+V(k) = v1; 
+X1(k)= var1;    
+X2(k)=var2;        
+end; 
+k 
+Gbest 
+%l1
+res=l2 
+p1 
+p2 
+ 
+%TTT = cputime - TTT 
+subplot(2,2,1),plot(X1),title('P1'); 
+subplot(2,2,2),plot(W),title('W'); 
+subplot(2,2,3),plot(V),title('V'); 
+subplot(2,2,4),plot(X2),title('P2'); 
+end
+
+%Gbest 
+%p1 
+%p2 
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+%for i = 1:A(1); 
+%    for m = 1:A(2); 
+%        if I(i,m)>w2  
+%            P(i,m)=1; 
+%        else P(i,m)=0; 
+%        end; 
+%    end; 
+%end; 
+%imview(P);

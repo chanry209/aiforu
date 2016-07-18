@@ -1,0 +1,100 @@
+function [seuil, varianceB]=otus_ops(I,D,M)
+%% calculate the histogramme
+%I=G;
+[m,n]=size(I); 
+L=256;
+histo=zeros(L,1);
+
+for i=1:m
+    for j=1:n
+        histo(I(i,j)+1)=histo(I(i,j)+1)+1;
+    end
+end
+histo=histo/(m*n);
+
+%% initialisation the parametres
+c1=2; c2=2; 
+wmax=0.9; wmin=0.4; 
+%w=0.729;
+pix=0:255;
+
+%% initialisation aleatoire de la position et la vitess de particule
+X=1+255*rand(1,M); 
+V=255*rand(1,M); 
+
+%% use otus methode as the fitness of the best position
+pbest=zeros(M,2); % initiallize the matrice for store the best positions 
+gbest1=0;         % initialize the best position of particule 1
+gbest2=0;         % initialize the best position of particule 1
+W1=zeros(0,M);    
+W2=zeros(0,M);
+U1=zeros(0,M);
+U2=zeros(0,M);
+var=zeros(0,M);
+w=zeros(0,D);
+
+for k=1:D 
+    w(k)=wmax-(wmax-wmin)*k/D; 
+    for i=1:M 
+        t=length(find(X(i)>=pix)); 
+        w1=0; 
+        u1=0; u2=0;
+        for j=1:t 
+            w1=w1+histo(j); 
+            u1=u1+(j-1)*histo(j); 
+        end
+        if w1==0
+            u1=0;
+        else
+            u1=u1/w1;
+        end
+
+        W1(i)=w1; 
+        U1(i)=u1/w1; 
+        w2=1-w1;
+        W2(i)=w2;
+      
+        for r=t+1:L
+            u2=u2+(r-1)*histo(r);
+        end
+    
+        if w2==0
+            u2=0;
+        else
+            u2=u2/w2;
+        end
+        U2(i)=u2; 
+        
+% calculate the variance between two classes (as the fitness)
+        var(i)=W1(i)*W2(i)*((U2(i)-U1(i))^2); 
+    end 
+    for i=1:M
+        if pbest(i,2)<var(i) 
+           pbest(i,2)=var(i);   % value of fitness (variance between classes)        
+           pbest(i,1)=X(i);     % position of particule i (seuil)
+        end 
+    end
+    
+% seache the best position
+    [maxVar,idx]=max(var); 
+    if maxVar>=gbest2 
+        gbest2=maxVar; % value of fitness
+        gbest1=X(idx); % position of particule i (seuil)
+    end 
+    
+    if gbest1>256
+        gbest1=256;
+    end
+  
+   % update the vitess and the position
+   for i=1:M 
+       %V(i)=round(w*V(i)+c1*rand*(pbest(i,1)-X(i))+c2*rand*(gbest1-X(i))); 
+       V(i)=round(w(k)*V(i)+c1*rand*(pbest(i,1)-X(i))+c2*rand*(gbest1-X(i))); 
+       X(i)=V(i)+X(i); 
+   end  
+
+end
+
+seuil=round(gbest1);
+varianceB = gbest2;
+end

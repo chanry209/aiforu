@@ -1,0 +1,181 @@
+clear; 
+close all;
+clc;
+
+%% load
+addpath C:\Users\qian\Desktop\AIFORU\Electrophorese\
+folder = 'C:\Users\qian\Desktop\AIFORU\Electrophorese\profils\Etude avec Gerard\P\';
+files=dir([folder '*.mat']);
+
+data={'fichier' 'givenBands' 'ourBands' 'matchBands' 'Accuracy' 'FN taux de bands oublies'...
+    'FP taux de bands ajoutes' 'TN taux de non bands' 'TP taux de vrai bands'};
+
+glpf_fc=30;
+rectangleSize=[3,5];
+weight=[0.15,0.25, 0.20, 0.25,0.15];
+nbrBlock=40;
+ 
+for i=1:length(files)
+      i=2;
+      g=load([folder files(i).name]);       % band
+      n=find(files(i).name=='.',1,'first');
+      n1=find(files(i).name=='_',1,'first');
+      imagename=...
+          ['C:\Users\qian\Desktop\AIFORU\Electrophorese\profils\Etude avec Gerard\P\' files(i).name(1:n-1) '.png'];
+      [infos]=sscanf(files(i).name(n1+2:end-4),'%d_%d-%dx%d-%d');
+      I=imrotate(imread(imagename),infos(1)/10); % figure im contains many tubes
+ 
+      [resI,histo]=otus_block(I,glpf_fc, rectangleSize,weight, nbrBlock);
+      data{i+1,1}=files(i).name(1:end-3);
+      data{i+1,2}=fix(g.bands);
+      givenBands=fix(g.bands);
+      
+      figure;
+      subplot(3,1,1);
+      imshow(I);
+      title(['Figure originale ',num2str(files(i).name(1:n-1))])
+      subplot(3,1,2);
+      imshow(resI);
+      title(['Figure after Otsu segmentation with ',num2str(nbrBlock),'blocks ',...
+          'gaussFilter= ',num2str(glpf_fc)]);
+    
+      for j=1:size(givenBands,2)
+          bandLine=fix(g.bands(j));
+          hold on;
+          line([bandLine bandLine],[1 size(resI,2)],'Color',[1 0 0],'LineStyle','--');
+      end
+      
+      [m,n]=size(resI);
+      diff=zeros(1,n-1);
+      for k=1:n-1
+          if resI(1,k+1)>=resI(1,k)
+              diff(k)=resI(1,k+1)-resI(1,k);
+          else
+              diff(k)=resI(1,k)-resI(1,k+1);
+          end
+      end
+      
+      indexdiff=find(diff~=0);
+      newdiff=zeros(2,size(indexdiff,2));
+      
+      for k=1:size(indexdiff,2)
+          newdiff(1,k)=indexdiff(k);  % index of the pixel which there is a gap between the neighbors
+          newdiff(2,k)=diff(indexdiff(k));  % value of this difference between neighbor
+      end
+      
+      for k=1:size(newdiff,2)-1
+          if resI(1,newdiff(1,k)-1)~=255 &&  resI(1,newdiff(1,k)+1)~=255 ...
+                  && resI(1,newdiff(1,k)-1)<resI(1,newdiff(1,k)) && resI(1,newdiff(1,k))>resI(1,newdiff(1,k)+1)
+              ourBands(k)=fix(indexdiff(k));
+          elseif resI(1,newdiff(1,k)+1)~=255 && resI(1,newdiff(1,k+1)-1)~=255....
+              && abs(indexdiff(k+1)-indexdiff(k))>=3
+              ourBands(k)=fix((indexdiff(k)+indexdiff(k+1))/2);
+          end     
+      end
+ 
+      ourBands=unique(ourBands);
+      ourBands=ourBands(2:end);   % remove the first nul element
+      data{i+1,3}=ourBands;
+
+      for j=1:size(ourBands,2)
+          hold on;
+          line([ourBands(j) ourBands(j)],[1 size(resI,2)],'Color',[0 1 0],'LineStyle','--');
+      end
+      
+      % confusion matrice
+      givenTemp=zeros(1,n);
+      oursTemp=zeros(1,n);
+      temp=1:n;
+      
+      for k=1:n
+          for t=1:size(givenBands,2)
+              if temp(k)==givenBands(t)
+                  givenTemp(k)=givenBands(t);
+              end
+          end
+      end
+      
+      for k=1:n
+          for t=1:size(ourBands,2)
+              if temp(k)==ourBands(t)
+                  oursTemp(k)=ourBands(t);
+              end
+          end
+      end
+      
+      % calulate the differents kinds of rate      
+      nbrTP=0;   % amount of true positive, vrai bands
+      nbrFP=0;   % amount of false positive, bands incremental
+      nbrTN=0;   % amount of ture negative, non bands in both two results
+      nbrFN=0;   % amount of false negative, forgiven bands
+      matchBands=zeros(1,size(givenBands,2));
+      dist=zeros(1,size(ourBands,2));
+      
+      for k=1:size(givenBands,2)
+          for t=1:size(ourBands,2)
+              dist(1,t)=abs(givenBands(k)-ourBands(t));
+              if dist(1,t)<=3;
+                  nbrTP=nbrTP+1;
+                  matchBands(k)=givenBands(k);
+              end
+          end
+      end
+      matchBands=unique(matchBands);
+      matchBands=matchBands(2:end);
+      data{i+1,4}=matchBands;
+      
+      for k=1:n
+          if givenTemp(k)~=0 && oursTemp(k)==0
+              nbrFN=nbrFN+1;
+          end
+      end
+      
+      for k=1:n
+          if oursTemp(k)~=0 && givenTemp(k)==0
+              nbrFP=nbrFP+1;
+          end
+      end
+      
+      for k=1:n
+          if oursTemp(k)==0 && givenTemp(k)==0
+              nbrTN=nbrTN+1;
+          end
+      end
+      
+      % begin to calculate the elements of confusion matrix (the rates)
+      Accuracy=(nbrTP+nbrTN)/(nbrTP+nbrTN+nbrFP+nbrFN);
+      TP=nbrTP/(nbrFP+nbrTP);
+      FP=nbrFP/(nbrFP+nbrTN);
+      TN=nbrTN/(nbrTN+nbrFN);
+      FN=nbrFN/(nbrFN+nbrFP);
+      data{i+1,5}=Accuracy;
+      data{i+1,6}=FN;
+      data{i+1,7}=FP;
+      data{i+1,8}=TN;
+      data{i+1,9}=FN;
+      
+      
+      myConfusionMatrix=[TN FN;FP TP];
+      % save the resultat and the parametres
+      resultName =strcat( ['result_' files(i).name(1:end-4) '.mat' ]);
+      resultName(find(isspace(resultName))) = [];
+      parametresName=strcat(['parametres_' files(i).name(1:end-4) '.mat' ]);
+      resultName(find(isspace(parametresName))) = [];
+      save(parametresName,'glpf_fc', 'rectangleSize', 'weight', 'nbrBlock');
+      save(resultName,'givenBands','ourBands','matchBands','Accuracy','FN','FP','TN',...
+          'TP','myConfusionMatrix');
+               
+      subplot(3,1,3);
+      plot(givenTemp,'color','red');
+      hold on
+      plot(oursTemp,'color','green');
+      hold on
+      plot(resI(1,:),'color','blue');
+      legend('givenBands','ourBands','resultat segmentation');
+      ylabel('value of pixel')
+
+end
+
+
+
+
