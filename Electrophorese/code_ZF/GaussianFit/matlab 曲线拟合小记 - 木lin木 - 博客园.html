@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<!-- saved from url=(0043)http://www.cnblogs.com/linkr/p/3632032.html -->
+<html lang="zh-cn"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script src="./matlab 曲线拟合小记 - 木lin木 - 博客园_files/ca-pub-4210569241504288.js"></script>
+<meta charset="utf-8">
+<title>matlab 曲线拟合小记 - 木lin木 - 博客园</title>
+<link type="text/css" rel="stylesheet" href="./matlab 曲线拟合小记 - 木lin木 - 博客园_files/blog-common.css">
+<link id="MainCss" type="text/css" rel="stylesheet" href="./matlab 曲线拟合小记 - 木lin木 - 博客园_files/bundle-darkgreentrip.css">
+<link title="RSS" type="application/rss+xml" rel="alternate" href="http://www.cnblogs.com/linkr/rss">
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="http://www.cnblogs.com/linkr/rsd.xml">
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="http://www.cnblogs.com/linkr/wlwmanifest.xml">
+<script type="text/javascript" src="./matlab 曲线拟合小记 - 木lin木 - 博客园_files/encoder.js"></script><script src="./matlab 曲线拟合小记 - 木lin木 - 博客园_files/jquery.js" type="text/javascript"></script>  
+<script type="text/javascript">var currentBlogApp = 'linkr', cb_enable_mathjax=true;</script>
+<script src="./matlab 曲线拟合小记 - 木lin木 - 博客园_files/blog-common.js" type="text/javascript"></script>
+<script id="G--xyscore-load" type="text/javascript" charset="utf-8" async="" src="./matlab 曲线拟合小记 - 木lin木 - 博客园_files/xyscore_main.js"></script></head>
+<body>
+<a name="top"></a>
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="http://www.cnblogs.com/linkr/"><img id="blogLogo" src="./matlab 曲线拟合小记 - 木lin木 - 博客园_files/logo.gif" alt="返回主页"></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="http://www.cnblogs.com/linkr/">木lin木</a></h1>
+<h2>----学习与交流的园地</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="MyLinks1_HomeLink" class="menu" href="http://www.cnblogs.com/">博客园</a></li>
+<li><a id="MyLinks1_MyHomeLink" class="menu" href="http://www.cnblogs.com/linkr/">首页</a></li>
+<li></li>
+<li><a id="MyLinks1_ContactLink" class="menu" rel="nofollow" href="http://msg.cnblogs.com/send/%E6%9C%A8lin%E6%9C%A8">联系</a></li>
+<li><a id="MyLinks1_Syndication" class="menu" href="http://www.cnblogs.com/linkr/rss">订阅</a>
+<!--<a id="MyLinks1_XMLLink" class="aHeaderXML" href="http://www.cnblogs.com/linkr/rss"><img src="http://www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="MyLinks1_Admin" class="menu" rel="nofollow" href="http://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+<div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class="post">
+		<h1 class="postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="./matlab 曲线拟合小记 - 木lin木 - 博客园_files/matlab 曲线拟合小记 - 木lin木 - 博客园.html">matlab 曲线拟合小记</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body"><p>&nbsp;</p> <p>在matlab中经常需要对数据进行曲线拟合，如最常见的多项式拟合，一般可以通过cftool调用曲线拟合工具（curve fit tool），通过图形界面可以很方便的进行曲线拟合，但是有些时候也会遇到不方便用图形工具。因此这里简单的记下两种常用的拟合方法。</p> <p>1 多项式拟合（polyfit和polyval）</p> <p>polyfit可以对数据进行拟合（自定义用几次多项式），返回相应的参数，然后用polyval生成拟合后的数据点，下面的例子中我们对抛物线y=3x<sup>2</sup>+6x+5进行拟合。</p> <div class="cnblogs_code" style="border-top: #cccccc 1px solid; border-right: #cccccc 1px solid; border-bottom: #cccccc 1px solid; padding-bottom: 5px; padding-top: 5px; padding-left: 5px; border-left: #cccccc 1px solid; padding-right: 5px; background-color: #f5f5f5"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./matlab 曲线拟合小记 - 木lin木 - 博客园_files/copycode.gif" alt="复制代码"></a></span></div><pre>x = -<span style="color: #800080">5</span>:<span style="color: #800080">0.1</span>:<span style="color: #800080">5</span><span style="color: #000000">;
+y </span>= <span style="color: #800080">3</span>*x.^<span style="color: #800080">2</span>+<span style="color: #800080">6</span>*x + <span style="color: #800080">5</span> +<span style="color: #000000"> randn(size(x));
+p </span>= polyfit(x,y,<span style="color: #800080">2</span><span style="color: #000000">);
+yy </span>=<span style="color: #000000"> polyval(p,x); 
+plot(x,y,</span><span style="color: #800000">'</span><span style="color: #800000">.</span><span style="color: #800000">'</span><span style="color: #000000">);
+hold on;
+plot(x,yy,</span><span style="color: #800000">'</span><span style="color: #800000">r</span><span style="color: #800000">'</span>,<span style="color: #800000">'</span><span style="color: #800000">LineWidth</span><span style="color: #800000">'</span>,<span style="color: #800080">2</span>)</pre><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./matlab 曲线拟合小记 - 木lin木 - 博客园_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p>polyfit(x,y,2)中x表示自变量，y表示因变量，2表示用二次曲线（抛物线）进行拟合，得到的p其实是对应的参数估计值，yy为拟合数据点。另外在实验中还加了一个随机噪声。结果如图：</p>
+<p><a href="http://images.cnitblog.com/blog/362399/201403/290105405471840.png"><img title="image" style="border-top: 0px; border-right: 0px; background-image: none; border-bottom: 0px; padding-top: 0px; padding-left: 0px; border-left: 0px; display: inline; padding-right: 0px" border="0" alt="image" src="./matlab 曲线拟合小记 - 木lin木 - 博客园_files/290105422033067.png" width="244" height="197"></a></p>
+<p>2 高斯函数的曲线拟合</p>
+<p>高斯曲线也是很常要拟合的曲线，这里介绍一种直接用代码使用cftool拟合工具的方法，这种方法可以对许多自定义的函数进行拟合（例如用来做多项式拟合，但是这种方法要麻烦很多，远没有前一种方法多项式拟合方便）。下面的是一个简单的例子,其中还可以进行更复杂的设置,具体请help fit和fittype.</p>
+<div class="cnblogs_code" style="border-top: #cccccc 1px solid; border-right: #cccccc 1px solid; border-bottom: #cccccc 1px solid; padding-bottom: 5px; padding-top: 5px; padding-left: 5px; border-left: #cccccc 1px solid; padding-right: 5px; background-color: #f5f5f5"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./matlab 曲线拟合小记 - 木lin木 - 博客园_files/copycode.gif" alt="复制代码"></a></span></div><pre>f = fittype(<span style="color: #800000">'</span><span style="color: #800000">a*exp(-((x-b)/c)^2)</span><span style="color: #800000">'</span><span style="color: #000000">);
+x </span>= -<span style="color: #800080">10</span>:<span style="color: #800080">0.2</span>:<span style="color: #800080">10</span><span style="color: #000000">;
+y </span>= <span style="color: #800080">5</span>*exp(-((x)/<span style="color: #800080">4</span>).^<span style="color: #800080">2</span>)+<span style="color: #000000">randn(size(x))*0.1;
+plot(x,y,</span><span style="color: #800000">'</span><span style="color: #800000">.</span><span style="color: #800000">'</span><span style="color: #000000">)
+[cfun,gof] </span>=<span style="color: #000000"> fit(x(:),y(:),f);
+yy </span>= cfun.a*exp(-((x-cfun.b)/cfun.c).^<span style="color: #800080">2</span><span style="color: #000000">);
+hold on;plot(x,yy,</span><span style="color: #800000">'</span><span style="color: #800000">r</span><span style="color: #800000">'</span>,<span style="color: #800000">'</span><span style="color: #800000">LineWidth</span><span style="color: #800000">'</span>,<span style="color: #800080">2</span>);</pre><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./matlab 曲线拟合小记 - 木lin木 - 博客园_files/copycode.gif" alt="复制代码"></a></span></div></div>
+<p>结果如下图：</p>
+<p><a href="http://images.cnitblog.com/blog/362399/201403/290105436415295.png"><img title="image" style="border-top: 0px; border-right: 0px; background-image: none; border-bottom: 0px; padding-top: 0px; padding-left: 0px; margin: 0px; border-left: 0px; display: inline; padding-right: 0px" border="0" alt="image" src="./matlab 曲线拟合小记 - 木lin木 - 博客园_files/290105462971350.png" width="244" height="194"></a></p>
+<p>此外，高斯曲线的拟合也可以通过转化为多项式拟合的方法实现，先将被拟合数据y取对数，然后用多项式拟合求出对应的参数。代码如下：</p>
+<div class="cnblogs_code" style="border-top: #cccccc 1px solid; border-right: #cccccc 1px solid; border-bottom: #cccccc 1px solid; padding-bottom: 5px; padding-top: 5px; padding-left: 5px; border-left: #cccccc 1px solid; padding-right: 5px; background-color: #f5f5f5"><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./matlab 曲线拟合小记 - 木lin木 - 博客园_files/copycode.gif" alt="复制代码"></a></span></div><pre>x = -<span style="color: #800080">10</span>:<span style="color: #800080">0.2</span>:<span style="color: #800080">10</span><span style="color: #000000">;
+y </span>= <span style="color: #800080">5</span>*exp(-((x)/<span style="color: #800080">4</span>).^<span style="color: #800080">2</span><span style="color: #000000">);
+lny </span>=<span style="color: #000000"> log(y);
+p </span>= polyfit(x,lny,<span style="color: #800080">2</span><span style="color: #000000">);
+gauss.c </span>= sqrt(-<span style="color: #800080">1</span>/p(<span style="color: #800080">1</span><span style="color: #000000">));
+gauss.b </span>= -p(<span style="color: #800080">2</span>)/<span style="color: #800080">2</span>/p(<span style="color: #800080">1</span><span style="color: #000000">);
+gauss.a </span>= exp(p(<span style="color: #800080">3</span>)-p(<span style="color: #800080">1</span>)*gauss.b^<span style="color: #800080">2</span><span style="color: #000000">);
+yy </span>= gauss.a*exp(-((x-gauss.b)/gauss.c).^<span style="color: #800080">2</span><span style="color: #000000">);
+plot(x,y,</span><span style="color: #800000">'</span><span style="color: #800000">.</span><span style="color: #800000">'</span><span style="color: #000000">);
+hold on;
+plot(x,yy,</span><span style="color: #800000">'</span><span style="color: #800000">r</span><span style="color: #800000">'</span>,<span style="color: #800000">'</span><span style="color: #800000">LineWidth</span><span style="color: #800000">'</span>,<span style="color: #800080">2</span>)</pre><div class="cnblogs_code_toolbar"><span class="cnblogs_code_copy"><a href="javascript:void(0);" onclick="copyCnblogsCode(this)" title="复制代码"><img src="./matlab 曲线拟合小记 - 木lin木 - 博客园_files/copycode.gif" alt="复制代码"></a></span></div></div>
+
+<p>结果如图所示,但是这种方法似乎只在没有噪声干扰时效果较好,如果存在噪声的干扰的话,那么这个估计不是最佳的(因为对数运算使不同区间的噪声影响不同),右图为加了噪声之后的情况.</p>
+<p><a href="http://images.cnitblog.com/blog/362399/201403/290105491418348.png"><img title="image" style="border-top: 0px; border-right: 0px; background-image: none; border-bottom: 0px; padding-top: 0px; padding-left: 0px; border-left: 0px; display: inline; padding-right: 0px" border="0" alt="image" src="./matlab 曲线拟合小记 - 木lin木 - 博客园_files/290105517974403.png" width="248" height="199"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="http://images.cnitblog.com/blog/362399/201403/290105540166758.png"><img title="image" style="border-top: 0px; border-right: 0px; background-image: none; border-bottom: 0px; padding-top: 0px; padding-left: 0px; margin: 0px; border-left: 0px; display: inline; padding-right: 0px" border="0" alt="image" src="./matlab 曲线拟合小记 - 木lin木 - 博客园_files/290105560477171.png" width="244" height="200"></a></p></div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory">分类: <a href="http://www.cnblogs.com/linkr/category/533452.html">Matlab</a></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"><a href="http://www.cnblogs.com/linkr/p/3630902.html" class="p_n_p_prefix">« </a> 上一篇：<a href="http://www.cnblogs.com/linkr/p/3630902.html" title="发布于2014-03-28 16:08">双线性插值</a><br><a href="http://www.cnblogs.com/linkr/p/4502161.html" class="p_n_p_prefix">» </a> 下一篇：<a href="http://www.cnblogs.com/linkr/p/4502161.html" title="发布于2015-05-13 23:54">wireshark 无线抓包</a><br></div>
+</div>
+
+
+		</div>
+		<div class="postDesc">posted @ <span id="post-date">2014-03-29 01:06</span> <a href="http://www.cnblogs.com/linkr/">木lin木</a> 阅读(<span id="post_view_count">19164</span>) 评论(<span id="post_comment_count">...</span>)  <a href="http://i.cnblogs.com/EditPosts.aspx?postid=3632032" rel="nofollow">编辑</a> <a href="http://www.cnblogs.com/linkr/p/3632032.html#" onclick="AddToWz(3632032);return false;">收藏</a></div>
+	</div>
+	<script type="text/javascript">var allowComments=true,isLogined=false,cb_blogId=104931,cb_entryId=3632032,cb_blogApp=currentBlogApp,cb_blogUserGuid='c99483f2-162a-e111-b988-842b2b196315',cb_entryCreatedDate='2014/3/29 1:06:00';loadViewCount(cb_entryId);</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"><div style="color:green;margin:50px 0;font-weight:bold;">努力加载评论中...</div></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id="comment_form" class="commentform">
+<a name="commentform"></a>
+<div id="divCommentShow"></div>
+<div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="http://www.cnblogs.com/linkr/p/3632032.html#" onclick="return RefreshPage();">刷新页面</a><a href="http://www.cnblogs.com/linkr/p/3632032.html#top">返回顶部</a></div>
+<div id="comment_form_container"></div>
+<div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+<div id="ad_t2"><a href="http://www.ucancode.com/index.htm" target="_blank">【推荐】50万行VC++源码: 大型组态工控、电力仿真CAD与GIS源码库</a><br><a href="https://www.jpush.cn/" target="_blank">【推荐】极光推送30多万开发者的选择，SDK接入量超过30亿了，你还没注册？</a><br><a href="http://click.aliyun.com/m/3037/" target="_blank">【阿里云SSD云盘】速度行业领先</a><br></div>
+<div id="opt_under_post"></div>
+<div id="ad_c1" class="c_ad_block">     <ins class="adsbygoogle" style="display: inline-block; width: 300px; height: 250px;" data-ad-client="ca-pub-4210569241504288" data-ad-slot="5457903683" data-adsbygoogle-status="done"><ins id="aswift_0_expand" style="display:inline-table;border:none;height:250px;margin:0;padding:0;position:relative;visibility:visible;width:300px;background-color:transparent"><ins id="aswift_0_anchor" style="display:block;border:none;height:250px;margin:0;padding:0;position:relative;visibility:visible;width:300px;background-color:transparent"><iframe width="300" height="250" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){setTimeout(h,0)}else if(h.match){try{h=s.upd(h,i)}catch(e){}w.location.replace(h)}}" id="aswift_0" name="aswift_0" style="left:0;position:absolute;top:0;"></iframe></ins></ins></ins></div>
+<div id="under_post_news"><div class="itnews c_ad_block"><b>最新IT新闻</b>:<br> ·  <a href="http://news.cnblogs.com/n/537104/" target="_blank">微软称只有Windows 10支持最新一代的CPU</a><br> ·  <a href="http://news.cnblogs.com/n/537103/" target="_blank">任天堂首款手机游戏Miitomo将于3月正式发布</a><br> ·  <a href="http://news.cnblogs.com/n/537102/" target="_blank">巴伦周刊：科技股的苦日子还在后面</a><br> ·  <a href="http://news.cnblogs.com/n/537100/" target="_blank">Space X明日凌晨再次发射：将尝试海上回收</a><br> ·  <a href="http://news.cnblogs.com/n/537099/" target="_blank">英特尔：我的核显能秒掉市面上80%的独立显卡</a><br>» <a href="http://news.cnblogs.com/" title="IT新闻" target="_blank">更多新闻...</a></div></div>
+<div id="under_post_kb"><div class="itnews c_ad_block" id="kb_block"><b>最新知识库文章</b>:<br><div id="kb_recent"> ·  <a href="http://kb.cnblogs.com/page/536387/" target="_blank">Docker简介</a><br> ·  <a href="http://kb.cnblogs.com/page/536115/" target="_blank">Docker简明教程</a><br> ·  <a href="http://kb.cnblogs.com/page/535581/" target="_blank">Git协作流程</a><br> ·  <a href="http://kb.cnblogs.com/page/535355/" target="_blank">企业计算的终结</a><br> ·  <a href="http://kb.cnblogs.com/page/535278/" target="_blank">软件开发的核心</a><br></div>» <a href="http://kb.cnblogs.com/" target="_blank">更多知识库文章...</a></div></div>
+<div id="HistoryToday" class="c_ad_block"></div>
+<script type="text/javascript">
+$(function () {
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);    
+});
+</script>
+</div>
+
+
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"><div id="sidebar_search" class="sidebar-block">
+<div id="sidebar_search" class="mySearch">
+<h3 class="catListTitle">搜索</h3>
+<div id="sidebar_search_box">
+<div id="widget_my_zzk" class="div_my_zzk"><input type="text" id="q" onkeydown="return zzk_go_enter(event);" class="input_my_zzk">&nbsp;<input onclick="zzk_go()" type="button" value="找找看" id="btnZzk" class="btn_my_zzk"></div>
+<div id="widget_my_google" class="div_my_zzk"><input type="text" name="google_q" id="google_q" onkeydown="return google_go_enter(event)" class="input_my_zzk">&nbsp;<input onclick="google_go()" type="button" value="谷歌搜索" class="btn_my_zzk"></div>
+</div>
+</div>
+
+</div><div id="sidebar_categories">
+<div id="sidebar_postcategory" class="catListPostCategory sidebar-block">
+<h3 class="catListTitle">随笔分类<span style="font-size:11px;font-weight:normal">(14)</span></h3>
+
+<ul>
+
+<li><a id="CatList_LinkList_0_Link_0" href="http://www.cnblogs.com/linkr/category/533452.html">Matlab(4)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_1" href="http://www.cnblogs.com/linkr/category/545331.html">Python(1)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_2" href="http://www.cnblogs.com/linkr/category/702128.html">Wireless(3)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_3" href="http://www.cnblogs.com/linkr/category/344300.html">随想录(2)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_4" href="http://www.cnblogs.com/linkr/category/344299.html">学习笔记(4)</a> </li>
+
+</ul>
+
+</div>
+
+<div id="sidebar_postarchive" class="catListPostArchive sidebar-block">
+<h3 class="catListTitle">随笔档案<span style="font-size:11px;font-weight:normal">(14)</span></h3>
+
+<ul>
+
+<li><a id="CatList_LinkList_1_Link_0" href="http://www.cnblogs.com/linkr/archive/2015/06.html">2015年6月 (2)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_1" href="http://www.cnblogs.com/linkr/archive/2015/05.html">2015年5月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_2" href="http://www.cnblogs.com/linkr/archive/2014/03.html">2014年3月 (3)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_3" href="http://www.cnblogs.com/linkr/archive/2014/01.html">2014年1月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_4" href="http://www.cnblogs.com/linkr/archive/2013/03.html">2013年3月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_5" href="http://www.cnblogs.com/linkr/archive/2012/10.html">2012年10月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_6" href="http://www.cnblogs.com/linkr/archive/2012/07.html">2012年7月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_7" href="http://www.cnblogs.com/linkr/archive/2012/01.html">2012年1月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_1_Link_8" href="http://www.cnblogs.com/linkr/archive/2011/12.html">2011年12月 (3)</a> </li>
+
+</ul>
+
+</div>
+
+<div id="sidebar_articlecategory" class="catListArticleCategory sidebar-block">
+<h3 class="catListTitle">文章分类<span style="font-size:11px;font-weight:normal">(16)</span></h3>
+
+<ul>
+
+<li><a id="CatList_LinkList_2_Link_0" href="http://www.cnblogs.com/linkr/category/344285.html">Reproduced articles(14)</a> </li>
+
+<li><a id="CatList_LinkList_2_Link_1" href="http://www.cnblogs.com/linkr/category/344904.html">读书笔记和文摘(2)</a> </li>
+
+</ul>
+
+</div>
+
+</div><div id="sidebar_recentcomments" class="sidebar-block"><div id="recent_comments_wrap">
+<div class="catListComment">
+<h3 class="catListTitle">最新评论</h3>
+
+	<div id="RecentCommentsBlock"><ul>
+    <li class="recent_comment_title"><a href="http://www.cnblogs.com/linkr/articles/2306005.html#3332162">1. Re:农历算法</a></li>
+    <li class="recent_comment_body">想问博主一个问题。<br><br>时辰即0~24点的划分，阴历和阳历和农历有区别么？<br>现在的时辰划分能够保证中午是12点么？</li>
+    <li class="recent_comment_author">--诺贝尔</li>
+    <li class="recent_comment_title"><a href="http://www.cnblogs.com/linkr/articles/2297783.html#3274406">2. Re:Matlab求方差，均值，均方差，协方差的函数</a></li>
+    <li class="recent_comment_body">var有求矩阵的方差功能，第2个参数设为1就行了，std调用的就是var函数</li>
+    <li class="recent_comment_author">--天边一颗星</li>
+    <li class="recent_comment_title"><a href="http://www.cnblogs.com/linkr/p/3630902.html#3129635">3. Re:双线性插值</a></li>
+    <li class="recent_comment_body">nice</li>
+    <li class="recent_comment_author">--dark89757</li>
+    <li class="recent_comment_title"><a href="http://www.cnblogs.com/linkr/p/3630902.html#3111654">4. Re:双线性插值</a></li>
+    <li class="recent_comment_body">很有启发,也是被维基给搞懵了</li>
+    <li class="recent_comment_author">--生命在于折腾</li>
+</ul>
+</div>
+</div>
+</div></div></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright ©2016 木lin木
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+<script type="text/javascript" charset="utf-8" src="./matlab 曲线拟合小记 - 木lin木 - 博客园_files/sea.js" async=""></script></body></html>

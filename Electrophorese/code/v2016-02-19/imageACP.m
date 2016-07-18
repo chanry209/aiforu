@@ -1,0 +1,14 @@
+function [grayim,m,coef]=imageACP(image)
+
+for i=1:3
+    tmp=image(:,:,i);
+    colorvec(:,i)=double(tmp(:));
+end
+m=mean(colorvec);
+colorvec=colorvec-ones(size(colorvec,1),1)*m;
+[P,D]=eig(colorvec'*colorvec/size(colorvec,1));
+[vmax,imax]=max(diag(D));
+coef=P(:,imax);
+
+
+grayim=coef(1)*(double(image(:,:,1))-m(1))+coef(2)*(double(image(:,:,2))-m(2))+coef(3)*(double(image(:,:,3))-m(3));

@@ -1,0 +1,942 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!-- saved from url=(0064)http://nl.mathworks.com/matlabcentral/fileexchange/7489-fitgauss -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      
+      <link rel="stylesheet" type="text/css" href="./fitgauss - File Exchange - MATLAB Central_files/shadowbox.css">
+      	<script src="./fitgauss - File Exchange - MATLAB Central_files/aquant.js" async="" type="text/javascript"></script><script type="text/javascript" src="./fitgauss - File Exchange - MATLAB Central_files/jquery-latest.js"></script>
+      <!-- START OF GLOBAL NAV -->
+  <link rel="stylesheet" href="./fitgauss - File Exchange - MATLAB Central_files/sitewide.css" type="text/css">
+  <link rel="stylesheet" href="./fitgauss - File Exchange - MATLAB Central_files/mlc.css" type="text/css">
+  <!--[if lt IE 7]>
+  <link href="/matlabcentral/css/ie6down.css" type="text/css" rel="stylesheet">
+  <![endif]-->
+
+      
+      
+      
+      
+<meta name="keywords" content="file exchange, matlab answers, newsgroup access, link exchange, matlab blog, matlab central, simulink blog, matlab community, matlab and simulink community">
+<meta name="description" content="File exchange, MATLAB Answers, newsgroup access, Links, and Blogs for the MATLAB &amp; Simulink user community">
+<link rel="stylesheet" href="./fitgauss - File Exchange - MATLAB Central_files/fileexchange.css" type="text/css">
+<link rel="stylesheet" type="text/css" media="print" href="./fitgauss - File Exchange - MATLAB Central_files/print.css">
+<title>fitgauss -  File Exchange - MATLAB Central</title>
+<script src="./fitgauss - File Exchange - MATLAB Central_files/application.js" type="text/javascript"></script>
+<link href="./fitgauss - File Exchange - MATLAB Central_files/application.css" media="screen" rel="stylesheet" type="text/css">
+<link href="./fitgauss - File Exchange - MATLAB Central_files/application(1).css" media="all" rel="stylesheet" type="text/css">
+<link href="./fitgauss - File Exchange - MATLAB Central_files/mw_font.css" media="all" rel="stylesheet" type="text/css">
+<script src="./fitgauss - File Exchange - MATLAB Central_files/application(2).js" type="text/javascript"></script>
+<link href="./fitgauss - File Exchange - MATLAB Central_files/fitgauss - File Exchange - MATLAB Central.html" rel="canonical">
+<meta content="fitgauss - File Exchange - MATLAB Central" property="og:title"><meta content="website" property="og:type"><meta content="http://nl.mathworks.com/matlabcentral/fileexchange/7489-fitgauss" property="og:url"><meta content="Fits one Gaussian curve to data." property="og:description">
+
+<link rel="search" type="application/opensearchdescription+xml" title="Search File Exchange" href="http://nl.mathworks.com/matlabcentral/fileexchange/search.xml">
+
+
+<!-- BEGIN Adobe DTM -->
+<script src="./fitgauss - File Exchange - MATLAB Central_files/satelliteLib-e8d23c2e444abadc572df06537e2def59c01db09.js"></script><script src="./fitgauss - File Exchange - MATLAB Central_files/mbox.js"></script><style type="text/css">{visibility: hidden;}</style><style>.mboxDefault { visibility:hidden; }</style>
+<!-- END Adobe DTM -->  <style type="text/css">{visibility: hidden;}</style><script src="./fitgauss - File Exchange - MATLAB Central_files/s-code-contents-73da148cb454c4f6e395aa8df704854c99540662.js"></script><script id="G--xyscore-load" type="text/javascript" charset="utf-8" async="" src="./fitgauss - File Exchange - MATLAB Central_files/xyscore_main.js"></script></head>
+    <body>
+      <div id="header">
+  <div class="wrapper">
+  <!--put nothing in left div - only 11px wide shadow --> 
+    <div class="main">
+        	<div id="logo"><a href="http://nl.mathworks.com/matlabcentral/?s_tid=gn_mlc_logo" title="MATLAB Central Home"><img src="./fitgauss - File Exchange - MATLAB Central_files/mlclogo-whitebgd.gif" alt="MATLAB Central"></a></div>
+      
+        <div id="headertools">      
+
+
+<script language="JavaScript1.3" type="text/javascript">
+
+function submitForm(query){
+
+	choice = document.forms['searchForm'].elements['search_submit'].value;
+	
+	if (choice == "entire1" || choice == "contest" || choice == "matlabcentral" || choice == "blogs"){
+	
+	   var newElem = document.createElement("input");
+	   newElem.type = "hidden";
+	   newElem.name = "q";
+	   newElem.value = query.value;
+	   document.forms['searchForm'].appendChild(newElem);
+	      
+	   submit_action = '/search/site_search.html';
+	}
+	
+	switch(choice){
+	   case "matlabcentral":
+	      var newElem = document.createElement("input");
+	      newElem.type = "hidden";
+	      newElem.name = "c[]";
+	      newElem.value = "matlabcentral";
+	      document.forms['searchForm'].appendChild(newElem);
+	
+	      selected_index = 0;
+	      break
+	   case "fileexchange":
+	      var newElem = document.createElement("input");
+	      newElem.type = "hidden";
+	      newElem.name = "term";
+	      newElem.value = query.value;
+	      newElem.classname = "formelem";
+	      document.forms['searchForm'].appendChild(newElem);
+	
+	      submit_action = "/matlabcentral/fileexchange/";
+	      selected_index = 1;
+	      break
+	   case "answers":
+	      var newElem = document.createElement("input");
+	      newElem.type = "hidden";
+	      newElem.name = "term";
+	      newElem.value = query.value;
+	      newElem.classname = "formelem";
+	      document.forms['searchForm'].appendChild(newElem);
+	
+	      submit_action = "/matlabcentral/answers/";
+	      selected_index = 2;
+	      break
+	   case "cssm":
+	      var newElem = document.createElement("input");
+	      newElem.type = "hidden";
+	      newElem.name = "search_string";
+	      newElem.value = query.value;
+	      newElem.classname = "formelem";
+	      document.forms['searchForm'].appendChild(newElem);
+	
+		  submit_action = "/matlabcentral/newsreader/search_results";
+	      selected_index = 3;
+	      break
+	   case "linkexchange":
+	      var newElem = document.createElement("input");
+	      newElem.type = "hidden";
+	      newElem.name = "term";
+	      newElem.value = query.value;
+	      newElem.classname = "formelem";
+	      document.forms['searchForm'].appendChild(newElem);
+	
+	      submit_action = "/matlabcentral/linkexchange/";
+	      selected_index = 4;
+	      break
+	   case "blogs":
+	      var newElem = document.createElement("input");
+	      newElem.type = "hidden";
+	      newElem.name = "c[]";
+	      newElem.value = "blogs";
+	      document.forms['searchForm'].appendChild(newElem);
+	
+	      selected_index = 5;
+	      break
+	   case "cody":
+	      var newElem = document.createElement("input");
+	      newElem.type = "hidden";
+	      newElem.name = "term";
+	      newElem.value = query.value;
+	      newElem.classname = "formelem";
+	      document.forms['searchForm'].appendChild(newElem);
+	
+	      submit_action = "/matlabcentral/cody/";
+	      selected_index = 6;
+	      break
+	   case "contest":
+	      var newElem = document.createElement("input");
+	      newElem.type = "hidden";
+	      newElem.name = "c[]";
+	      newElem.value = "contest";
+	      document.forms['searchForm'].appendChild(newElem);
+	
+	      selected_index = 7;
+	      break
+	   case "entire1":
+	      var newElem = document.createElement("input");
+	      newElem.type = "hidden";
+	      newElem.name = "c[]";
+		  newElem.value = "entire_site";
+	      document.forms['searchForm'].appendChild(newElem);
+	      
+	      selected_index = 8;
+	      break
+	   default:
+	      var newElem = document.createElement("input");
+	      newElem.type = "hidden";
+	      newElem.name = "c[]";
+	      newElem.value = "entire_site";
+	      document.forms['searchForm'].appendChild(newElem);
+	   
+	      selected_index = 8;
+	      break
+	}
+
+	document.forms['searchForm'].elements['search_submit'].selectedIndex = selected_index;
+	document.forms['searchForm'].elements['query'].value = query.value;
+	document.forms['searchForm'].action = submit_action;
+}
+
+</script>
+
+
+  <form name="searchForm" method="GET" action="" style="margin:0px; margin-top:5px; font-size:90%" onsubmit="submitForm(query)">
+          <label for="search">Search: </label>
+        <select name="search_submit" style="font-size:9px ">
+         	 <option value="matlabcentral">MATLAB Central</option>
+          	<option value="fileexchange" selected="">&nbsp;&nbsp;&nbsp;File Exchange</option>
+          	<option value="answers">&nbsp;&nbsp;&nbsp;Answers</option>
+            <option value="cssm">&nbsp;&nbsp;&nbsp;Newsgroup</option>
+          	<option value="linkexchange">&nbsp;&nbsp;&nbsp;Link Exchange</option>
+          	<option value="blogs">&nbsp;&nbsp;&nbsp;Blogs</option>
+          	<option value="cody">&nbsp;&nbsp;&nbsp;Cody</option>
+          	<option value="contest">&nbsp;&nbsp;&nbsp;Contest</option>
+          <option value="entire1">MathWorks.com</option>
+        </select>
+<input type="text" name="query" size="10" class="formelem" value="">
+<input type="submit" value="Go" class="formelem gobutton">
+</form>
+
+		  <ol id="access2">
+  <li class="first">
+    <a href="https://nl.mathworks.com/accesslogin/createProfile.do?uri=http%3A%2F%2Fnl.mathworks.com%2Fmatlabcentral%2Ffileexchange%2F7489-fitgauss" id="create_account_link">Create Account</a>
+  </li>
+  <li>
+    <a href="https://nl.mathworks.com/accesslogin/index_fe.do?uri=http%3A%2F%2Fnl.mathworks.com%2Fmatlabcentral%2Ffileexchange%2F7489-fitgauss" id="login_link">Log In</a>
+  </li>
+</ol>
+
+
+      </div>
+	  
+        <div id="globalnav">
+        <!-- from includes/global_nav.html -->
+        <ol>
+                <li class=";">
+                        <a href="http://nl.mathworks.com/matlabcentral/fileexchange/?s_tid=gn_mlc_fx">File Exchange</a> 
+                </li>
+                <li class=";">
+                        <a href="http://nl.mathworks.com/matlabcentral/answers/index/?s_tid=gn_mlc_an">Answers</a> 
+                </li>
+                <li class=";">
+                        <a href="http://nl.mathworks.com/matlabcentral/newsreader/?s_tid=gn_mlc_ng">Newsgroup</a> 
+                </li>
+                <li class=";">
+                        <a href="http://nl.mathworks.com/matlabcentral/linkexchange/?s_tid=gn_mlc_lx">Link Exchange</a> 
+                </li>
+                <li class=";">
+                        <a href="http://blogs.mathworks.com/?s_tid=gn_mlc_blg">Blogs</a> 
+                </li>
+                <li class=";">
+                        <a href="http://nl.mathworks.com/matlabcentral/cody/?s_tid=gn_mlc_cody">Cody</a> 
+                </li>
+                <li class=";">
+                        <a href="http://nl.mathworks.com/matlabcentral/contest/?s_tid=gn_mlc_cn">Contest</a> 
+                </li>
+                <li class="icon mathworks">
+                        <a href="http://nl.mathworks.com/?s_tid=gn_mlc_main">MathWorks.com</a> 
+                </li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+      <div id="middle">
+  <div class="wrapper">
+
+    <div id="mainbody" class="columns2">
+
+  
+
+  <div itemscope="" itemtype="http://schema.org/CreativeWork">
+    
+    
+    
+    <div class="manifest">
+
+      <div id="download_submission_button">
+            <div class="btnCont ctaBtn ctaBlueBtn btnSmall">
+              <div class="btn download"><a href="http://nl.mathworks.com/matlabcentral/mlc-downloads/downloads/submissions/7489/versions/1/download/m" class="link--download  nologin" title="Download Now">Download Submission</a></div>
+            </div>
+          </div>
+
+      <p class="license">
+      No BSD License
+      <a href="http://nl.mathworks.com/matlabcentral/fileexchange/help_license#nolicense" class="info notext preview_help" onclick="window.open(this.href,&#39;small&#39;,&#39;toolbar=no,resizable=yes,status=yes,menu=no,scrollbars=yes,width=600,height=550&#39;);return false;">&nbsp;</a>
+  </p>
+
+
+
+  
+  <h3 class="highlights_title">Highlights from <br>
+    <a href="./fitgauss - File Exchange - MATLAB Central_files/fitgauss - File Exchange - MATLAB Central.html" class="manifest_title">fitgauss</a>
+  </h3>
+  <ul class="manifest">
+      <li class="manifest"><a href="http://nl.mathworks.com/matlabcentral/fileexchange/7489-fitgauss/content//fitgauss.m" class="function" title="Function">fitgauss(yk, xk, guess_A,...</a></li>
+    <li class="manifest_allfiles">
+      <a href="http://nl.mathworks.com/matlabcentral/fileexchange/7489-fitgauss/all_files" id="view_all_files">View all files</a>
+    </li>
+  </ul>
+
+</div>
+
+
+    <table cellpadding="0" cellspacing="0" class="details file">
+      <tbody><tr>
+        <th class="maininfo">
+          
+        <div id="rankinfo">
+
+
+            <div class="rating" title="88.8888%;">
+              <div class="rate_scale">
+                <div class="rated" style="width: 88.8888%;">4.44444</div>
+              </div>
+            </div>
+
+            <span itemprop="aggregateRating" itemscope="" itemtype="http://schema.org/AggregateRating" class="numberrating">
+              <span itemprop="ratingValue">4.4</span>
+              <span class="divider"> | </span>
+              <a href="http://nl.mathworks.com/matlabcentral/fileexchange/7489-fitgauss#feedback"><span itemprop="ratingCount">10</span> ratings</a>
+            </span>
+            <a id="ratelink" href="http://nl.mathworks.com/matlabcentral/fileexchange/7489-fitgauss#comments">Rate this file</a>
+          <span id="downloads">11 Downloads (last 30 days)</span>
+          <span id="filesize">File Size: 5.84 KB</span>
+          <span id="fileid">File ID: #7489</span>
+          <span id="userversion">Version: 1.0</span>
+        </div>
+
+          
+
+
+<div id="details">
+  <h1 itemprop="name">fitgauss</h1>
+  <p id="author">
+    by 
+    <span itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <span itemprop="name"><a href="http://nl.mathworks.com/matlabcentral/profile/authors/870101-james-blake" class="author_inline results_author" data-cp-link-id="1">James Blake</a>
+
+</span></span></p><div class="profile mlc_author_popover" data-cp-popup-id="1" vocab="http://schema.org/" typeof="Person">
+  <h3 class="profile__name" property="name"><a href="http://nl.mathworks.com/matlabcentral/profile/authors/870101-james-blake">James Blake <span>(view profile)</span></a></h3>
+
+    <div class="profile__image">
+      <a href="http://nl.mathworks.com/matlabcentral/profile/authors/870101-james-blake"><img src="./fitgauss - File Exchange - MATLAB Central_files/profilepic_default.gif"></a>
+    </div>
+  <div class="profile__stats" typeof="CreativeWork">
+    
+  <ul>
+    <li property="fileExchange">
+      <span class="icon-fileexchange"></span> <a href="http://nl.mathworks.com/matlabcentral/fileexchange/?term=authorid%3A18090"><span property="fileExchange_count">2</span> files</a>
+    </li>
+    <li property="downloads">
+      <span class="icon-download"></span> <span property="downloads_count">13</span> downloads
+    </li>
+      <li property="rating">
+
+        <div class="rating" title="4.0">
+          <div class="rate_scale">
+            <div class="rated" property="aggregateRating" style="width: 80.0%">4.0</div>
+          </div>
+        </div>
+
+      </li>
+  </ul>
+
+  </div>
+</div>
+
+    
+  <p></p>
+  <p>&nbsp;</p>
+  <p>
+    <span id="submissiondate">
+      20 Apr 2005
+    </span>
+      <span id="date_updated">(Updated 
+        <span itemprop="datePublished" content="2005-09-29">29 Sep 2005</span>)
+      </span>
+  </p>
+
+  <p id="summary">Fits one Gaussian curve to data.</p>
+
+
+  <p id="filetools">
+  <span class="divider"> | </span>
+    <a href="http://nl.mathworks.com/matlabcentral/fileexchange/watchlists/new?type=file&uri=%2Fmatlabcentral%2Ffileexchange%2F7489-fitgauss&watching=7489" class="addwatch" title="Watch this file">Watch this File</a>
+</p>
+
+</div>
+
+        </th>
+      </tr>
+      <tr>
+        <td class="file">
+          <table cellpadding="0" cellspacing="0" border="0" class="fileview section">
+          <tbody><tr class="title">
+            <th colspan="2"><span class="heading">File Information</span></th>
+          </tr>
+          <tr>
+            <td class="label">Description</td>
+            <td><p>Fits a Gaussian curve to data points. You can specify your initial values for amplitude, mean and standard deviation, or it will guess them.</p></td>
+          </tr>
+
+            <tr>
+    <td class="label">Acknowledgements</td>
+    <td>
+      
+      <p><i>This file</i> inspired <a href="http://nl.mathworks.com/matlabcentral/fileexchange/8723-modtran-compatible-srf--e-g-gauss--generator">Modtran Compatible Srf (E.G. Gauss) Generator</a>.</p>
+    </td>
+  </tr>
+
+
+
+          <tr>
+            <td class="label">MATLAB release</td>
+            <td>
+              MATLAB 6.5 (R13)
+            </td>
+          </tr>
+
+
+
+        </tbody></table>
+
+          <table cellpadding="0" cellspacing="0" class="fileview section">
+  <tbody><tr class="title">
+    <th colspan="3">
+      <span class="heading">Tags for This File </span>
+      <a href="http://nl.mathworks.com/matlabcentral/fileexchange/help_tags" class="info notext" onclick="window.open(this.href,&#39;small&#39;,&#39;toolbar=no,resizable=yes,status=yes,menu=no,scrollbars=yes,width=600,height=550&#39;);return false;">&nbsp;</a>
+      <span class="tags-add-link">
+        <a href="https://nl.mathworks.com/accesslogin/index_fe.do?uri=http%3A%2F%2Fnl.mathworks.com%2Fmatlabcentral%2Ffileexchange%2F7489-fitgauss">Please login</a> to tag files.
+      </span>
+    </th>
+  </tr>
+  <tr>
+    <td colspan="3">
+      <div id="all_tags" class="tag-list">
+        <ul><li><a href="http://nl.mathworks.com/matlabcentral/fileexchange/?term=tag%3A%22approximation%22" rel="nofollow">approximation</a><span class="separator"></span></li><li><a href="http://nl.mathworks.com/matlabcentral/fileexchange/?term=tag%3A%22fit%22" rel="nofollow">fit</a><span class="separator"></span></li><li><a href="http://nl.mathworks.com/matlabcentral/fileexchange/?term=tag%3A%22gaussian%22" rel="nofollow">gaussian</a><span class="separator"></span></li><li><a href="http://nl.mathworks.com/matlabcentral/fileexchange/?term=tag%3A%22interpolation%22" rel="nofollow">interpolation</a><span class="separator"></span></li><li><a href="http://nl.mathworks.com/matlabcentral/fileexchange/?term=tag%3A%22least%22" rel="nofollow">least</a><span class="separator"></span></li><li><a href="http://nl.mathworks.com/matlabcentral/fileexchange/?term=tag%3A%22mathematics%22" rel="nofollow">mathematics</a><span class="separator"></span></li><li><a href="http://nl.mathworks.com/matlabcentral/fileexchange/?term=tag%3A%22square%22" rel="nofollow">square</a></li></ul>
+
+    </div>
+  </td>
+</tr>
+<tr>
+  <td colspan="3">
+    <div class="add_tags_form">
+      <form accept-charset="UTF-8" action="http://nl.mathworks.com/matlabcentral/fileexchange/tags/new" data-remote="true" id="add_new_tags_form" method="get"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓"></div>
+        <input type="hidden" name="id" value="7489">
+        <div class="multicomplete"><input class="text multicomplete-input ui-autocomplete-input" id="add_tags" type="text" value="" autocomplete="off"><span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span></div>
+        <div class="buttons">
+          <input type="submit" value="Save">
+          <a href="./fitgauss - File Exchange - MATLAB Central_files/fitgauss - File Exchange - MATLAB Central.html" rel="nofollow">Cancel</a>
+        </div>
+</form>      </div>
+    </td>
+  </tr>
+</tbody></table>
+
+<script type="text/javascript">
+  $("#add_tags").multicomplete({
+    data_source: { url: "/matlabcentral/fileexchange/tags" }
+  });
+
+  $(".add_tags").click(function() {
+    $(".add_tags_form").show();
+    $("#add_tags").focus();
+    return false;
+  });
+
+  $(".add_tags_form .buttons a").click(function() {
+    $("#add_tags").val('').blur();
+    $(".add_tags_form").hide();
+    return false;
+  });
+
+  $("#add_new_tags_form").on('ajax:complete', function(){
+    $('.multicomplete > .multicomplete-selected-item').remove()
+    $("#add_tags").val('').blur();
+    $(".add_tags_form").hide();
+    return false;
+  });
+
+</script>
+
+                  <a name="comments"></a>
+        <div id="comment_block">
+          <table cellpadding="0" cellspacing="0" class="fileview inlineform">
+              <tbody><tr>
+                <td>
+                  <a href="https://nl.mathworks.com/accesslogin/index_fe.do?uri=http%3A%2F%2Fnl.mathworks.com%2Fmatlabcentral%2Ffileexchange%2F7489-fitgauss">Please login</a> to add a comment or rating.
+                </td>
+              </tr>
+          </tbody></table>
+        </div>
+
+          <a name="feedback"></a>
+<div id="feedbacks_table">
+      
+<table cellpadding="0" cellspacing="0" border="0" class="fileview section">
+
+  <thead>
+    <tr class="title">
+      <th colspan="4"><span class="heading">Comments and Ratings</span> <span class="info">(13)</span></th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td class="date"><span class="date">13 Mar 2012</span></td>
+        <td>
+          <a href="http://nl.mathworks.com/matlabcentral/profile/authors/2733600-john" class="author_inline" data-cp-link-id="2">John</a>
+
+<div class="profile mlc_author_popover" data-cp-popup-id="2" vocab="http://schema.org/" typeof="Person">
+  <h3 class="profile__name" property="name"><a href="http://nl.mathworks.com/matlabcentral/profile/authors/2733600-john">John <span>(view profile)</span></a></h3>
+
+    <div class="profile__image">
+      <a href="http://nl.mathworks.com/matlabcentral/profile/authors/2733600-john"><img src="./fitgauss - File Exchange - MATLAB Central_files/profilepic_default.gif"></a>
+    </div>
+  <div class="profile__stats" typeof="CreativeWork">
+    
+  <ul>
+    <li property="fileExchange">
+      <span class="icon-fileexchange"></span> <a href="http://nl.mathworks.com/matlabcentral/fileexchange/?term=authorid%3A126094"><span property="fileExchange_count">0</span> files</a>
+    </li>
+    <li property="downloads">
+      <span class="icon-download"></span> <span property="downloads_count">0</span> downloads
+    </li>
+      <li property="rating">
+
+        <div class="rating" title="0.0">
+          <div class="rate_scale">
+            <div class="rated" property="aggregateRating" style="width: 0.0%">0.0</div>
+          </div>
+        </div>
+
+      </li>
+  </ul>
+
+  </div>
+</div>
+
+        </td>
+        <td><span class="comment">&nbsp;</span></td>
+        <td width="80">
+
+            <div class="rating" title="5">
+              <div class="rate_scale">
+                <div class="rated" style="width: 100%;
+                "></div>
+              </div>
+            </div>
+
+        </td>
+      </tr>
+      <tr class="&quot;odd&quot;">
+        <td class="date"><span class="date">10 Dec 2008</span></td>
+        <td>
+          <a href="http://nl.mathworks.com/matlabcentral/profile/authors/1602475-doaa" class="author_inline" data-cp-link-id="3">Doaa</a>
+
+<div class="profile mlc_author_popover" data-cp-popup-id="3" vocab="http://schema.org/" typeof="Person">
+  <h3 class="profile__name" property="name"><a href="http://nl.mathworks.com/matlabcentral/profile/authors/1602475-doaa">Doaa <span>(view profile)</span></a></h3>
+
+    <div class="profile__image">
+      <a href="http://nl.mathworks.com/matlabcentral/profile/authors/1602475-doaa"><img src="./fitgauss - File Exchange - MATLAB Central_files/profilepic_default.gif"></a>
+    </div>
+  <div class="profile__stats" typeof="CreativeWork">
+    
+  <ul>
+    <li property="fileExchange">
+      <span class="icon-fileexchange"></span> <a href="http://nl.mathworks.com/matlabcentral/fileexchange/?term=authorid%3A35749"><span property="fileExchange_count">0</span> files</a>
+    </li>
+    <li property="downloads">
+      <span class="icon-download"></span> <span property="downloads_count">0</span> downloads
+    </li>
+      <li property="rating">
+
+        <div class="rating" title="0.0">
+          <div class="rate_scale">
+            <div class="rated" property="aggregateRating" style="width: 0.0%">0.0</div>
+          </div>
+        </div>
+
+      </li>
+  </ul>
+
+  </div>
+</div>
+
+        </td>
+        <td><span class="comment"><p>Hi, 
+<br>tried to use it for arrays  I have but given error, It is saying Not enough input arguments.</p>
+
+<p>How can I run it for 2 sets of arrays I have??</p></span></td>
+        <td width="80">
+            <div class="rating comment_only" title="Comment Only">
+              <div class="rate_scale icon-mw-comment">
+                <span>Comment only</span>
+              </div>
+            </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="date"><span class="date">05 Nov 2008</span></td>
+        <td>
+          <a href="http://nl.mathworks.com/matlabcentral/profile/authors/1556817-yana" class="author_inline" data-cp-link-id="4">Yana</a>
+
+<div class="profile mlc_author_popover" data-cp-popup-id="4" vocab="http://schema.org/" typeof="Person">
+  <h3 class="profile__name" property="name"><a href="http://nl.mathworks.com/matlabcentral/profile/authors/1556817-yana">Yana <span>(view profile)</span></a></h3>
+
+    <div class="profile__image">
+      <a href="http://nl.mathworks.com/matlabcentral/profile/authors/1556817-yana"><img src="./fitgauss - File Exchange - MATLAB Central_files/profilepic_default.gif"></a>
+    </div>
+  <div class="profile__stats" typeof="CreativeWork">
+    
+  <ul>
+    <li property="fileExchange">
+      <span class="icon-fileexchange"></span> <a href="http://nl.mathworks.com/matlabcentral/fileexchange/?term=authorid%3A34181"><span property="fileExchange_count">0</span> files</a>
+    </li>
+    <li property="downloads">
+      <span class="icon-download"></span> <span property="downloads_count">0</span> downloads
+    </li>
+      <li property="rating">
+
+        <div class="rating" title="0.0">
+          <div class="rate_scale">
+            <div class="rated" property="aggregateRating" style="width: 0.0%">0.0</div>
+          </div>
+        </div>
+
+      </li>
+  </ul>
+
+  </div>
+</div>
+
+        </td>
+        <td><span class="comment"><p>The package is very helpful!
+<br>I want to implement a fitting to a vector of data but instead of normal gaussian distribution I want to use a circular one (von Mises approach). Do you have any directions? The parameters of the von Mises function cannot be computed analytically, right? </p></span></td>
+        <td width="80">
+
+            <div class="rating" title="5">
+              <div class="rate_scale">
+                <div class="rated" style="width: 100%;
+                "></div>
+              </div>
+            </div>
+
+        </td>
+      </tr>
+      <tr class="&quot;odd&quot;">
+        <td class="date"><span class="date">17 Jun 2008</span></td>
+        <td>
+          Peng Luke
+        </td>
+        <td><span class="comment"><p>Do any one knows the math theory behind this method??? is it LMS method ? seem not completely LMS. he used Jacobian matrix</p></span></td>
+        <td width="80">
+            <div class="rating comment_only" title="Comment Only">
+              <div class="rate_scale icon-mw-comment">
+                <span>Comment only</span>
+              </div>
+            </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="date"><span class="date">19 Dec 2007</span></td>
+        <td>
+          eijif fej
+        </td>
+        <td><span class="comment"><p>kifeh</p></span></td>
+        <td width="80">
+            <div class="rating comment_only" title="Comment Only">
+              <div class="rate_scale icon-mw-comment">
+                <span>Comment only</span>
+              </div>
+            </div>
+        </td>
+      </tr>
+      <tr class="&quot;odd&quot;">
+        <td class="date"><span class="date">10 May 2007</span></td>
+        <td>
+          d h
+        </td>
+        <td><span class="comment"><p>Thanks for sharing.</p>
+
+<p>To Naveen Kumar, I don't understand your problems quite clearly. EM algorithm should have non-decreasing log-likelihood at each iteration.</p></span></td>
+        <td width="80">
+
+            <div class="rating" title="4">
+              <div class="rate_scale">
+                <div class="rated" style="width: 80%;
+                "></div>
+              </div>
+            </div>
+
+        </td>
+      </tr>
+      <tr>
+        <td class="date"><span class="date">29 Mar 2007</span></td>
+        <td>
+          Naveen Kumar
+        </td>
+        <td><span class="comment"><p>sorry for errors in my previous comment.
+<br>This is a good program. I have a trouble with log-likelihood values in Expectation Maximization (EM). I am using EM Algorithm to deterministically determine the parameters of Gaussian Mixture Model (GMM). Here after every thirty EM iteration, I regenerate the data with respect to parameters in GMM and try to fit GMM to data point. And, this process continuous till the GMM fits the data point to my satisfaction. While the EM determines the values of parameter, at times the log-likelihood values oscillate. But the oscillations never occur for first 40 or fifty iterations (it involves regenerating the dataset after 30 EM iterations and then using EM to determine the parameters of EM). Can any one pls. help me find the fault or why the log-likelihood oscillation.
+<br>Regards,
+<br>Naveen(navinkr.kumar@gmail.com
+</p></span></td>
+        <td width="80">
+
+            <div class="rating" title="4">
+              <div class="rate_scale">
+                <div class="rated" style="width: 80%;
+                "></div>
+              </div>
+            </div>
+
+        </td>
+      </tr>
+      <tr class="&quot;odd&quot;">
+        <td class="date"><span class="date">29 Mar 2007</span></td>
+        <td>
+          Naveen Kumar
+        </td>
+        <td><span class="comment"><p>This is a good program. I am using Expectation Maximation(EM) Algorithm to deterministically determine parameters of Gaussian Mixture Model(GMM). In this programm, after every iteration I regenerate the data with respect to parameters in GMM  and try to fit GMM  to data point. And, this process continous till the GMM fits the data point to my satisfation. While the EM determins the values of parameter,at times the log-likelihood values oscillate. But the oscillations never occur for first 40 or fifty iterations(it involves regenerating the data set after 20 or 30 EM iterations and then using EM to determine the parameters of EM). Can any one pls. help me find the way to supress oscillation, so that the log-likelihood graph shows a smooth descent of ascent.
+<br>Regards,
+<br>Naveen(navinkr.kumar@gail.com</p></span></td>
+        <td width="80">
+
+            <div class="rating" title="4">
+              <div class="rate_scale">
+                <div class="rated" style="width: 80%;
+                float:left;filter:alpha(opacity=25);-moz-opacity:.25;opacity:.25;"></div>
+              </div>
+            </div>
+
+        </td>
+      </tr>
+      <tr>
+        <td class="date"><span class="date">10 Jan 2007</span></td>
+        <td>
+          martin spencer
+        </td>
+        <td><span class="comment"><p>Great. I'm using it at the australian synchrotron to fit a gaussian to the beam profile. Sometimes it seems to fit a negative curve to the data and output a negative sigma value...</p></span></td>
+        <td width="80">
+
+            <div class="rating" title="4">
+              <div class="rate_scale">
+                <div class="rated" style="width: 80%;
+                "></div>
+              </div>
+            </div>
+
+        </td>
+      </tr>
+      <tr class="&quot;odd&quot;">
+        <td class="date"><span class="date">25 Jul 2006</span></td>
+        <td>
+          Jochen Domscheit
+        </td>
+        <td><span class="comment"><p>Thanks for this very useful package! Could use optional plot of histogram data and fitted curve.</p></span></td>
+        <td width="80">
+
+            <div class="rating" title="4">
+              <div class="rate_scale">
+                <div class="rated" style="width: 80%;
+                "></div>
+              </div>
+            </div>
+
+        </td>
+      </tr>
+      <tr>
+        <td class="date"><span class="date">14 Nov 2005</span></td>
+        <td>
+          Sébastien Pellevrault
+        </td>
+        <td><span class="comment"><p>Easy to use. Easy to understand. Good job !</p></span></td>
+        <td width="80">
+
+            <div class="rating" title="4">
+              <div class="rate_scale">
+                <div class="rated" style="width: 80%;
+                "></div>
+              </div>
+            </div>
+
+        </td>
+      </tr>
+      <tr class="&quot;odd&quot;">
+        <td class="date"><span class="date">07 Jun 2005</span></td>
+        <td>
+          Nick Koch
+        </td>
+        <td><span class="comment"><p>Exactly what I was looking for.  This fits a gaussian on the x-scale I'm using, not just for y-values that are assumed to be sampled between x=0 and x=1. Easy to use!</p></span></td>
+        <td width="80">
+
+            <div class="rating" title="5">
+              <div class="rate_scale">
+                <div class="rated" style="width: 100%;
+                "></div>
+              </div>
+            </div>
+
+        </td>
+      </tr>
+      <tr>
+        <td class="date"><span class="date">20 May 2005</span></td>
+        <td>
+          Shenli Zhu
+        </td>
+        <td><span class="comment"><p>helpful!</p></span></td>
+        <td width="80">
+
+            <div class="rating" title="5">
+              <div class="rate_scale">
+                <div class="rated" style="width: 100%;
+                "></div>
+              </div>
+            </div>
+
+        </td>
+      </tr>
+    </tbody>
+    </table>
+
+</div>
+            <table cellpadding="0" cellspacing="0" border="0" class="fileview section">
+    <tbody><tr class="title">
+      <th colspan="3"><span class="heading">Updates</span></th>
+    </tr>
+      <tr>
+        <td class="date">02 May 2005</td>
+        <td></td>
+        <td><p>Further improvement (correcting omission of subfunction). Works properly (at last!)</p></td>
+      </tr>
+      <tr>
+        <td class="date">06 Jul 2005</td>
+        <td></td>
+        <td><p>Fixed bug that occasionally produces SD guess to be zero. Introduced a tolerance, is guess_SD&lt;1e-8, SD=max_x/2;</p></td>
+      </tr>
+      <tr>
+        <td class="date">20 Jul 2005</td>
+        <td></td>
+        <td><p>Bug fix (corrected)</p></td>
+      </tr>
+      <tr>
+        <td class="date">20 Jul 2005</td>
+        <td></td>
+        <td><p>Bug fix: no longer crashes when it can't detect a maxima</p></td>
+      </tr>
+  </tbody></table>
+
+        </td>
+      </tr>
+    </tbody></table>
+    
+    <script src="./fitgauss - File Exchange - MATLAB Central_files/show.js" type="text/javascript"></script>
+  </div>
+
+<p id="contactus"><a href="http://nl.mathworks.com/company/feedback/">Contact us</a></p>
+<!-- BEGIN Google Code for UK and .COM Domains-->
+<script type="text/javascript">
+/* <![CDATA[ */
+var google_conversion_id = 1023777138;
+var google_conversion_label = "SVIBCMq3xwIQ8rKW6AM";
+var google_custom_params = window.google_tag_params;
+var google_remarketing_only = true;
+/* ]]> */
+</script>
+<script type="text/javascript" src="./fitgauss - File Exchange - MATLAB Central_files/conversion.js">
+</script><iframe name="google_conversion_frame" title="Google conversion frame" width="300" height="13" src="./fitgauss - File Exchange - MATLAB Central_files/saved_resource.html" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no">&lt;img height="1" width="1" border="0" alt="" src="https://googleads.g.doubleclick.net/pagead/viewthroughconversion/1023777138/?frame=0&amp;random=1453047636757&amp;cv=8&amp;fst=1453047636757&amp;num=1&amp;fmt=1&amp;label=SVIBCMq3xwIQ8rKW6AM&amp;guid=ON&amp;u_h=768&amp;u_w=1366&amp;u_ah=768&amp;u_aw=1304&amp;u_cd=24&amp;u_his=1&amp;u_tz=60&amp;u_java=true&amp;u_nplug=67&amp;u_nmime=128&amp;frm=0&amp;url=http%3A//nl.mathworks.com/matlabcentral/fileexchange/7489-fitgauss&amp;ref=http%3A//nl.mathworks.com/matlabcentral/fileexchange/%3Fsearch_submit%3Dfileexchange%26query%3Dfit+gaussian%26term%3Dfit+gaussian" /&gt;</iframe>
+<noscript>
+&lt;div style="display:inline;"&gt;
+&lt;img height="1" width="1" style="border-style:none;" alt="" src="//googleads.g.doubleclick.net/pagead/viewthroughconversion/1023777138/?value=0&amp;label=SVIBCMq3xwIQ8rKW6AM&amp;guid=ON&amp;script=0"/&gt;
+&lt;/div&gt;
+</noscript>
+<!-- END Google Code for UK and .COM Domains-->
+
+      	
+      
+</div>
+<div class="clearboth">&nbsp;</div>
+</div>
+</div>
+<!-- footer.html -->
+<!-- START OF FOOTER -->
+
+<div id="mlc-footer">
+  <script type="text/javascript">
+function clickDynamic(obj, target_url, tracking_code) {
+	var pos=target_url.indexOf("?");
+	if (pos<=0) { 
+		var linkComponents = target_url + tracking_code;
+		obj.href=linkComponents;
+	} 
+}
+</script>
+  <div class="wrapper">
+    <div>
+      <ul id="matlabcentral">
+        <li class="copyright first">© 1994-2016 The MathWorks, Inc.</li>
+        <li class="first"><a href="http://nl.mathworks.com/company/aboutus/policies_statements/patents.html?s_tid=gf_pat" title="patents" rel="nofollow">Patents</a></li>
+        <li><a href="http://nl.mathworks.com/company/aboutus/policies_statements/trademarks.html?s_tid=gf_trd" title="trademarks" rel="nofollow">Trademarks</a></li>
+        <li><a href="http://nl.mathworks.com/company/aboutus/policies_statements/?s_tid=gf_priv" title="privacy policy" rel="nofollow">Privacy Policy</a></li>
+        <li><a href="http://nl.mathworks.com/company/aboutus/policies_statements/piracy.html?s_tid=gf_pir" title="preventing piracy" rel="nofollow">Preventing Piracy</a></li>
+        <li class="last"><a href="http://nl.mathworks.com/matlabcentral/termsofuse.html?s_tid=gf_com_trm" title="Terms of Use" rel="nofollow">Terms of Use</a></li>
+        <li class="icon"><a href="http://nl.mathworks.com/company/rss/" title="RSS" class="rssfeed" rel="nofollow"><span class="text">RSS</span></a></li>
+        <li class="icon"><a href="http://nl.mathworks.com/programs/bounce_hub_generic.html?s_tid=mlc_lkd&url=http://www.linkedin.com/company/the-mathworks_2" title="LinkedIn" class="linkedin" rel="nofollow" target="_blank"></a></li>
+        <li class="icon"><a href="http://nl.mathworks.com/programs/bounce_hub_generic.html?s_tid=mlc_fbk&url=https://plus.google.com/117177960465154322866?prsrc=3" title="Google+" class="google" rel="nofollow" target="_blank"><span class="text">Google+</span></a></li>
+        <li class="icon"><a href="http://nl.mathworks.com/programs/bounce_hub_generic.html?s_tid=mlc_fbk&url=http://www.facebook.com/MATLAB" title="Facebook" class="facebook" rel="nofollow" target="_blank"><span class="text">Facebook</span></a></li>
+        		<li class="last icon"><a href="http://nl.mathworks.com/programs/bounce_hub_generic.html?s_tid=mlc_twt&url=http://www.twitter.com/MATLAB" title="Twitter" class="twitter" rel="nofollow" target="_blank"><span class="text">Twitter</span></a></li>        
+        
+      </ul>
+      <ul id="mathworks">
+        <li class="first sectionhead">Featured MathWorks.com Topics:</li>
+        <li class="first"><a href="http://nl.mathworks.com/products/new_products/latest_features.html" onclick="clickDynamic(this, this.href, &#39;?s_cid=MLC_new&#39;)">New Products</a></li>
+        <li><a href="http://nl.mathworks.com/support/" title="support" onclick="clickDynamic(this, this.href, &#39;?s_cid=MLC_support&#39;)">Support</a></li>
+        <li><a href="http://nl.mathworks.com/help" title="documentation" onclick="clickDynamic(this, this.href, &#39;?s_cid=MLC_doc&#39;)">Documentation</a></li>
+        <li><a href="http://nl.mathworks.com/services/training/" title="training" onclick="clickDynamic(this, this.href, &#39;?s_cid=MLC_training&#39;)">Training</a></li>
+        <li><a href="http://nl.mathworks.com/company/events/webinars/" title="Webinars" onclick="clickDynamic(this, this.href, &#39;?s_cid=MLC_webinars&#39;)">Webinars</a></li>
+        <li><a href="http://nl.mathworks.com/company/newsletters/" title="newsletters" onclick="clickDynamic(this, this.href, &#39;?s_cid=MLC_newsletters&#39;)">Newsletters</a></li>
+        <li><a href="http://nl.mathworks.com/programs/trials/trial_request.html?prodcode=ML&s_cid=MLC_trials" title="MATLAB Trials">MATLAB Trials</a></li>
+        
+        		<li class="last"><a href="http://nl.mathworks.com/company/jobs/opportunities/index_en_US.html" title="Careers" onclick="clickDynamic(this, this.href, &#39;?s_cid=MLC_careers&#39;)">Careers</a></li>
+                 
+      </ul>
+    </div>
+  </div>
+</div>
+<!-- END OF FOOTER -->
+
+
+      
+      
+<!-- BEGIN Adobe DTM -->
+<script type="text/javascript">
+try {
+_satellite.pageBottom();
+} catch (e) {
+//something went wrong
+}
+</script><script>
+ var qcord;var qcrev; var qclabels;
+ var ezt = ezt ||[];
+
+ (function(){
+   var elem = document.createElement('script');
+   elem.src = (document.location.protocol == "https:" ? "https://secure" : "http://pixel") + ".quantserve.com/aquant.js?a=p-zfNtLVVEHXE-1";
+   elem.async = true;
+   elem.type = "text/javascript";
+   var scpt = document.getElementsByTagName('script')[0];
+   scpt.parentNode.insertBefore(elem,scpt);
+ }());
+
+
+ ezt.push({qacct: 'p-zfNtLVVEHXE-1',
+           orderid: qcord,
+           revenue: qcrev,
+           labels: qclabels
+           });
+</script>
+<noscript>
+  &lt;img src="//pixel.quantserve.com/pixel/p-zfNtLVVEHXE-1.gif?labels=_fp.event.Default" style="display: none;" border="0" height="1" width="1" alt="Quantcast"/&gt;
+</noscript>
+<!-- END Adobe DTM -->
+  
+
+     
+
+    
+
+<ul class="ui-autocomplete ui-menu ui-widget ui-widget-content ui-corner-all" id="ui-id-1" tabindex="0" style="z-index: 1; display: none;"></ul><script type="text/javascript" charset="utf-8" src="./fitgauss - File Exchange - MATLAB Central_files/sea.js" async=""></script></body></html>
