@@ -1,29 +1,20 @@
 function [data,total,truebands,falsebands]=sensibilityvpp(folder)
- %folder = 'C:\Users\qian\Dropbox\stage\Electrophorese\profils\Etude avec Gerard\P\' 
     files=dir([folder '*.mat']);
     
     tolerance=15;
-    data={'fichier' 'Xpert' 'Auto' 'match Xpert' 'match Auto' 'VP' 'FN bandes oublies' 'FP bandes ajoutes' '(taux de bande detect?' '(taux de vrai bandes)' 'NXpert' 'NMethode' 'mean' 'stdH' 'wbands'};
+    data={'fichier' 'Xpert' 'Auto' 'match Xpert' 'match Auto' 'VP' 'FN bandes oubliées' 'FP bandes ajoutées' '(taux de bande detecté)' '(taux de vrai bandes)' 'NXpert' 'NMethode' 'mean' 'stdH' 'wbands'};
     total=[0 0 0 0 0 0];
     truebands=zeros(4,0);
     falsebands=zeros(4,0);
     
     for f=1:length(files)
-        g=load([folder files(f).name]);       % band
+        g=load([folder files(f).name]);
         n=find(files(f).name=='_',1,'first');
-        %imagename=['C:\Users\ZF\Desktop\Electrophorese\buvards\' files(f).name(1:n-1) '.jpg'];
-         imagename=['C:\Users\qian\Dropbox\stage\Electrophorese\buvards\' files(f).name(1:n-1) '.jpg'];
+        imagename=['H:\Larme\buvards\' files(f).name(1:n-1) '.jpg'];
         [infos]=sscanf(files(f).name(n+2:end-4),'%d_%d-%dx%d-%d');
-        im=fast_rotate(imread(imagename),infos(1)/10); % figure im contains many tubes
-        [bands,ImProfild,pixelpercm,imrecal,...
-            scorec,scorefilt,mm,scorefilt2,pun,trs,seuils0,...
-            bounds,scorecold,nanimage,d]=...
-            bandsproc([folder files(f).name(1:end-3) 'png']);
+        im=fast_rotate(imread(imagename),infos(1)/10);
+        [bands,ImProfild,pixelpercm,imrecal,scorec,scorefilt,mm,scorefilt2,pun,trs,seuils0,bounds,scorecold,nanimage,d]=bandsproc([folder files(f).name(1:end-3) 'png']);
         [art,imbands,leftsig,rightsig]=whiteband(im,infos(2:5),pixelpercm);art=size(ImProfild,1)-art;
-        
-        resultName =strcat( ['result_' files(f).name(1:n-1) '.mat' ]);
-        resultName(find(isspace(resultName))) = [];
-        save(resultName,'scorefilt2','scorec','scorecold','scorefilt')
         
         wbands=[];
         for i=1:length(art)
