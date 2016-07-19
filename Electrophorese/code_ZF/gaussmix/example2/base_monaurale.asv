@@ -1,0 +1,33 @@
+function [Base] = base_monaurale(n)
+% n : nombre de locuteur
+
+for i = 1:10
+Bases(i).mono = [];
+end
+
+for j = 1:n
+for i = 1:28
+temp1 = strcat('D:\mes documents\STUDY RECENTE\DoctoratNew\Programme\Paraole\Good Code GMM\gaussmix\example2\seuil_0.00\spk_',num2str(j),'\spk_',num2str(i),'.mat');
+load (temp1);
+temp2 = Features;
+Bases(j).mono = [Bases(j).mono temp2];
+end
+Bases(j).mono = Bases(j).mono';
+clear Features
+clear temp1
+clear temp2
+end
+
+
+
+
+for i = 1:28
+temp2 = strcat('D:\mes documents\STUDY RECENTE\DoctoratNew\Programme\Paraole\Good Code GMM\gaussmix\example2\seuil_0.00\spk_2\spk_',num2str(i),'.mat');
+load (temp2);
+temp2 = Features;
+Bases2 = [Bases2 temp2];
+end
+Bases2 = Bases2';
+clear Features
+clear temp2
+clear i
