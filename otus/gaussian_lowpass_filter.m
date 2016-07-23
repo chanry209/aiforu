@@ -1,5 +1,6 @@
-function resI = gaussian_lowpass_filter(I,fc)
+function J = gaussian_lowpass_filter(I,fc)
 
+%%% gaussian filter allows the low frequence pass
 [m,n]=size(I);
 
 tf=fft2(double(I));
@@ -16,24 +17,18 @@ for i=1:m
         end
     end
 end
-
 tempImage=tf.*Ff;
 
 % inverser le shif de la FFT filtre
-
 tfi=ifft2(ifftshift(tempImage));
+J=tfi;
 
-resI=tfi;
-
-% figure;
-% subplot(2,1,1);
-% colormap gray;
-% imagesc(I);
-% title('image originale');
-% subplot(2,1,2);
-% colormap gray;
-% imagesc(1+log(abs(resI)));
-% % imshow(uint8(resI));
-% title(['image GLPF avec fc = ', num2str(fc)]); 
-
+figure;
+subplot(2,1,1);
+imshow(I);
+title('input Figure');
+subplot(2,1,2);
+colormap gray;
+imagesc(1+log(abs(resI)));
+title(['image GLPF avec fc = ', num2str(fc)]); 
 end
