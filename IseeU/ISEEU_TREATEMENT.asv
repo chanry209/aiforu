@@ -22,7 +22,7 @@ function varargout = ISEEU_TREATEMENT(varargin)
 
 % Edit the above text to modify the response to help ISEEU_TREATEMENT
 
-% Last Modified by GUIDE v2.5 25-Jul-2016 07:31:40
+% Last Modified by GUIDE v2.5 25-Jul-2016 18:02:21
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -43,7 +43,6 @@ else
 end
 % End initialization code - DO NOT EDIT
 
-
 % --- Executes just before ISEEU_TREATEMENT is made visible.
 function ISEEU_TREATEMENT_OpeningFcn(hObject, eventdata, handles, varargin)
 % This function has no output args, see OutputFcn.
@@ -60,7 +59,6 @@ guidata(hObject, handles);
 
 % UIWAIT makes ISEEU_TREATEMENT wait for user response (see UIRESUME)
 % uiwait(handles.iseeu_treatement);
-
 
 % --- Outputs from this function are returned to the command line.
 function varargout = ISEEU_TREATEMENT_OutputFcn(hObject, eventdata, handles) 
@@ -93,8 +91,8 @@ function loadbutton_Callback(hObject, eventdata, handles)
 set(handles.textLoading,'string','Loading.................')
 pause(1)
 %----------------------- ----------------------------
-% 1) Import the file Excel
-fileName=handles.datauser.Filenames; % Read the path
+% 1) Import the figure
+fileName=handles.datauser.fileName; % Read the path
 if isempty(fileName)
     set(handles.textLoading,'string','Nothing is requested ?!')
     return
@@ -136,8 +134,9 @@ set(handles.y2,'string',rect(4))
 % SAVE
 set(hObject,'string','OK');
 set(handles.textLoading,'string','Loading Completed','BackGroundColor',[1 0 0])
-
-
+pause(1)
+set(hObject,'string','Load');
+set(handles.textLoading,'string','Load the Next','BackGroundColor',[0.7 0.7 0.7])
 guidata(hObject,handles);
 
 
@@ -157,19 +156,12 @@ if isequal(sel,'open')
         str = [path file];
         set(hObject,'string',str);
     end
-    
-%     if (index)&&(iscell(file)) % multi-selection
-%         n = length(file);
-%         for j = 1:n
-%         str{j} = [path file{j}];
-%         end
-%         set(hObject,'string',str);
-%     end
-    
+        
     if isempty(str)
         return
     end
-    handles.datauser.Filenames = str;
+    
+    handles.datauser.fileName = str;
 end
 
 guidata(hObject,handles);
@@ -184,13 +176,98 @@ path = pwd;
 pathFig = strcat(path,'\NewFigures\');
 
 % make a folder named date to place the figures 
-s = mkdir(pathFig,date);
+s = mkdir(pathFig);
 if s~=1
     msgbox('There is problem of building a new folder for figures!')
     return
 end
 name = get(handles.newFigName, 'string');
 name = strcat(pathFig,name);
-save(name,'handles.datauser.newFig')
+I = handles.datauser.newFig;
+save(name,'I')
+set(handles.saveNewFig,'string','be Saving')
+pause(1);
+set(handles.saveNewFig,'string','Save')
+
 guidata(hObject,handles);
 
+
+
+function pathImTreated_Callback(hObject, eventdata, handles)
+% hObject    handle to pathImTreated (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of pathImTreated as text
+%        str2double(get(hObject,'String')) returns contents of pathImTreated as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function pathImTreated_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to pathImTreated (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on button press in loadImTreated.
+function loadImTreated_Callback(hObject, eventdata, handles)
+% hObject    handle to loadImTreated (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --- Executes on button press in inpaintVal.
+function inpaintVal_Callback(hObject, eventdata, handles)
+% hObject    handle to inpaintVal (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+IOri = handles.datauser.newFig; 
+
+  if ndims(IOri)==3 
+      I=rgb2gray(IOri);    
+  else
+      I = IOri;
+  end
+  I = im2double(I);
+    
+coefStr = get(handles.percentDel,'string');
+coef = str2double(coefStr);
+J = deletHighlight(I,coef);
+
+axes(handles.figDeSpot);
+image(J);
+title(' Del Spot Figure')
+axis image % zoom the figure to original scale
+axis auto
+axis off
+
+guidata(hObject,handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function percentDel_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to percentDel (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function percentDel_Callback(hObject, eventdata, handles)
+% hObject    handle to percentDel (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of percentDel as text
+%        str2double(get(hObject,'String')) returns contents of percentDel as a double
