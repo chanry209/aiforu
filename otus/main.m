@@ -1,4 +1,4 @@
-function varargout = Main(varargin)
+function varargout = main(varargin)
 % GUIDETEST MATLAB code for guideTest.fig
 %      GUIDETEST, by itself, creates a new GUIDETEST or raises the existing
 %      singleton*.

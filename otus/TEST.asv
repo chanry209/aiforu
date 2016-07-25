@@ -151,7 +151,7 @@ axes(handles.axes3);
 handles.percent=get(handles.inpainting,'value');
 I=deletHighlight(I,handles.percent);
 figure;
-imshow(I);
+imshow(J);
 
 
 
