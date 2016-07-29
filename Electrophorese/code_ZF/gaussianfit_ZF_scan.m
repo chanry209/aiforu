@@ -9,29 +9,35 @@ n_fois = 1;
 
 
 subplot 311 
-name = 'sensibiliteSebia074-1';
+name = 'oligo1-larme';
 % name = 'test10022016';
 namePic = strcat(name,'.png');
-nameMat = strcat(name,'.mat');
 A = imread(namePic);
-A = rgb2gray(A);
 imshow(A)
+
+subplot 312
+AGray = rgb2gray(A);
+AGray = im2double(AGray);
+scorec = median(AGray);
+imshow(AGray)
 % axis equal
 % axis off
 title(namePic)
 
-% image(A)
-load(nameMat)
-
-y = 1-scorec;
+subplot 313
+y = max(scorec)-scorec;
 x  = (1:length(y))/length(y);
+plot(x,y)
+axis auto
+
 
 n = 10;
 a = [1,ones(1,n)/n];
 b =ones(1,n)/n;
 y_filter = filter(b,a,y);
 
-subplot 312 %subplot 311
+figure
+subplot 211 %subplot 311
 plot(x,y,'og')
 hold on
 plot(x,y,'linewidth',3)
@@ -52,7 +58,7 @@ hold off
 % example of gaussian
 % x = (1:300)';
 % y = 2*gaussmf(x,[12,0])+gaussmf(x,[10,50])+1.8*gaussmf(x,[15,90])+gaussmf(x,[10,150])+1.6*gaussmf(x,[10,200])+1.2*gaussmf(x,[10,250])+1.5*gaussmf(x,[10,300]); % function of matlab
-subplot 313 %subplot 311
+subplot 212 %subplot 311
 x  = (1:length(y))/length(y);
 indT = 1:length(x); % all the index of x
 yLimit = max(y)*2;

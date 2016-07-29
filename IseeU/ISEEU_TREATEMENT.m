@@ -22,7 +22,11 @@ function varargout = ISEEU_TREATEMENT(varargin)
 
 % Edit the above text to modify the response to help ISEEU_TREATEMENT
 
+<<<<<<< HEAD
 % Last Modified by GUIDE v2.5 25-Jul-2016 17:07:39
+=======
+% Last Modified by GUIDE v2.5 25-Jul-2016 18:47:31
+>>>>>>> 80f0d437e488b6942c9a536731ab8045409bcca7
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -189,4 +193,114 @@ set(handles.saveNewFig,'string','be Saving')
 pause(1);
 set(handles.saveNewFig,'string','Save')
 
+guidata(hObject,handles);
+
+
+
+function pathImTreated_Callback(hObject, eventdata, handles)
+% hObject    handle to pathImTreated (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of pathImTreated as text
+%        str2double(get(hObject,'String')) returns contents of pathImTreated as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function pathImTreated_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to pathImTreated (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on button press in loadImTreated.
+function loadImTreated_Callback(hObject, eventdata, handles)
+% hObject    handle to loadImTreated (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --- Executes on button press in inpaintVal.
+function inpaintVal_Callback(hObject, eventdata, handles)
+% hObject    handle to inpaintVal (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+IOri = handles.datauser.newFig; 
+
+  if ndims(IOri)==3 
+      I=rgb2gray(IOri);    
+  else
+      I = IOri;
+  end
+%   I = im2double(I);
+I = im2uint8(I); % unit16 or others to uinit8
+coefStr = get(handles.percentDel,'string');
+coef = str2double(coefStr);
+J = deletHighlight(I,coef,0);
+
+axes(handles.figDelSpot);
+colormap gray;
+imagesc(J);
+% image(J);
+title(' Del Spot Figure')
+axis image % zoom the figure to original scale
+axis auto
+axis off
+
+guidata(hObject,handles);
+
+
+% --- Executes during object creation, after setting all properties.
+function percentDel_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to percentDel (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function percentDel_Callback(hObject, eventdata, handles)
+% hObject    handle to percentDel (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of percentDel as text
+%        str2double(get(hObject,'String')) returns contents of percentDel as a double
+
+
+% --- Executes on button press in takeOut1.
+function takeOut1_Callback(hObject, eventdata, handles)
+% hObject    handle to takeOut1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+figure
+IOri = handles.datauser.newFig; 
+
+  if ndims(IOri)==3 
+      I=rgb2gray(IOri);    
+  else
+      I = IOri;
+  end
+%   I = im2double(I);
+I = im2uint8(I); % unit16 or others to uinit8
+coefStr = get(handles.percentDel,'string');
+coef = str2double(coefStr);
+J = deletHighlight(I,coef,0);
+colormap gray;
+imagesc(J);
+% image(J);
+title(' Del Spot Figure')
+axis auto
+axis image
 guidata(hObject,handles);
