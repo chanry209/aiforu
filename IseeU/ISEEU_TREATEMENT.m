@@ -22,7 +22,11 @@ function varargout = ISEEU_TREATEMENT(varargin)
 
 % Edit the above text to modify the response to help ISEEU_TREATEMENT
 
+<<<<<<< HEAD
+% Last Modified by GUIDE v2.5 25-Jul-2016 17:07:39
+=======
 % Last Modified by GUIDE v2.5 25-Jul-2016 18:47:31
+>>>>>>> 80f0d437e488b6942c9a536731ab8045409bcca7
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;

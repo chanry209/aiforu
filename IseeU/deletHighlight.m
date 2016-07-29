@@ -1,6 +1,10 @@
+<<<<<<< HEAD
+function J=deletHighlight(I,coef)
+=======
 function J=deletHighlight(I,coef,indexFig)
 % if indexFig==1 then show the image
 
+>>>>>>> 80f0d437e488b6942c9a536731ab8045409bcca7
 [m,n]=size(I);
 L=256;
 histo=zeros(L,1);
@@ -33,6 +37,16 @@ for j=1:n
         end
     end
 end
+<<<<<<< HEAD
+
+figure;
+subplot(2,1,1);
+imshow(I);
+title('Figure originale');
+subplot(2,1,2)
+imshow(J);
+title(['Figure after ignore the top ', num2str(coef),'  highlights']);
+=======
     if indexFig ==1 
     figure;
     subplot(2,1,1);
@@ -42,4 +56,5 @@ end
     imshow(J);
     title(['Figure after ignore the top ', num2str(coef),'  highlights']);
     end
+>>>>>>> 80f0d437e488b6942c9a536731ab8045409bcca7
 end
