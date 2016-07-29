@@ -134,6 +134,28 @@ Iopenned = imopen(Ifilled,se); % performs morphological opening on
 figure, imshowpair(Iopenned,I,'montage');
 
 % 2-4 Extract features
-Iregion = regionprops(Iopenned, 'centroid');
-[labeled, numObjects] = bwlabel(Ioppened,4);
-st
+Iregion = regionprops(Iopenned, 'centroid'); %Measure properties of image regions
+[labeled,numObjects] = bwlabel(Iopenned,4); % Label connected components in 2-D binary image, 
+% returns a label matrix, where the variable n specifies the connectivity.
+stats = regionprops(labeled,'Eccentricity','Area','BoundingBox');
+areas = [stats.Area];
+eccentricities = [stats.Eccentricity];
+
+% 2-5 Use feature analysis to count skittles objects
+idxOfSkittles = find(eccentricities);
+statsDefects = stats(idxOfSkittles);
+
+figure, imshow(I);
+hold on;
+for idx = 1 : length(idxOfSkittles)
+        h = rectangle('Position',statsDefects(idx).BoundingBox,'LineWidth',2);
+        set(h,'EdgeColor',[.75 0 0]);
+        hold on;
+end
+title(['There are ', num2str(numObjects), ' objects in the image!']);
+hold off;
+
+%% 3 Image Registration App & Morph Tool
+% Process of aligning images from different data sets for visual comparison
+% or computational analysis. - Enables quantitative comparison - remove
+% changes due to camera motion 
