@@ -1,6 +1,6 @@
 function [resI]=otus_block(I,nbrBlock)
 %% diverse image into N blocks
-%nbrBlock=20;
+nbrBlock=20;
 nbr = mod(nbrBlock,2);
 while nbr == 1
     disp('amount of block must be a even number');
@@ -193,11 +193,11 @@ for j=1:n
 end
             
 
-% figure;
-% subplot(2,1,1);
-% imshow(I);
-% title(['Figure originale ',num2str(imagename)])
-% subplot(2,1,2);
-% imshow(resI);
-% title(['Figure after Otsu_block segmentation with ',num2str(nbrBlock),'blocks']);
+figure;
+subplot(2,1,1);
+imshow(I);
+%title(['Figure originale ',num2str(imagename)])
+subplot(2,1,2);
+imshow(resI);
+title(['Figure after Otsu_block segmentation with ',num2str(nbrBlock),'blocks']);
 end

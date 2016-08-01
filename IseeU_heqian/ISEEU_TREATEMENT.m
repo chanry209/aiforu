@@ -22,7 +22,7 @@ function varargout = ISEEU_TREATEMENT(varargin)
 
 % Edit the above text to modify the response to help ISEEU_TREATEMENT
 
-% Last Modified by GUIDE v2.5 29-Jul-2016 19:38:32
+% Last Modified by GUIDE v2.5 01-Aug-2016 11:44:11
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -71,8 +71,8 @@ function varargout = ISEEU_TREATEMENT_OutputFcn(hObject, eventdata, handles)
 varargout{1} = handles.output;
 
 % --- Executes during object creation, after setting all properties.
-function loadpath_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to loadpath (see GCBO)
+function loadPath_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to loadPath (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -141,9 +141,9 @@ guidata(hObject,handles);
 
 
 % --- If Enable == 'on', executes on mouse press in 5 pixel border.
-% --- Otherwise, executes on mouse press in 5 pixel border or over loadpath.
-function loadpath_ButtonDownFcn(hObject, eventdata, handles)
-% hObject    handle to loadpath (see GCBO)
+% --- Otherwise, executes on mouse press in 5 pixel border or over loadPath.
+function loadPath_ButtonDownFcn(hObject, eventdata, handles)
+% hObject    handle to loadPath (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 sel = get(gcf,'selectiontype');
