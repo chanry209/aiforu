@@ -366,7 +366,6 @@ title(['bright spot inpainted Figure-',figName]);
 %print(getimage(handles.figDelSpot),'-djpeg',['bright spot inpainted Figure-',figName])
 handles.datauser.inpaintFig=inpaintFig;
 
-
 guidata(hObject,handles);
 
 
@@ -426,7 +425,6 @@ axis auto;
 axis off;
 
 handles.datauser.treatFig2=J;
-
 guidata(hObject,handles);
 
 
@@ -492,7 +490,6 @@ resI=adjustContrast(J);
 ajustContrastFig=resI;
 
 figName=handles.datauser.nameFig;
-
 axes(handles.figAjustContrast);
 colormap gray;
 imagesc(ajustContrastFig);
@@ -503,10 +500,8 @@ axis off
 figure;
 imshow(ajustContrastFig);
 title(['contrast increased Figure-',figName]);
-%print(inpainFig,'-djpeg',['bright spot inpainted Figure-',figName])
-%print(getimage(handles.figDelSpot),'-djpeg',['bright spot inpainted Figure-',figName])
-handles.datauser.ajustContrastFig=ajustContrastFig;
 
+handles.datauser.ajustContrastFig=ajustContrastFig;
 guidata(hObject,handles);
 
 % --- Executes on button press in takeOut2.
@@ -526,89 +521,6 @@ title(['contrast increased Figure-',figName]);
 
 guidata(hObject,handles);
 
-
-
-% --- Executes on button press in morphClose.
-function morphClose_Callback(hObject, eventdata, handles)
-% hObject    handle to morphClose (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-J=handles.datauser.treatFig3;
-figName=handles.datauser.nameFig;
-
-if ndims(J)==3
-    J=rgb2gray(J);
-end
-J = im2uint8(J);
-
-a=get(handles.closeDiskSize,'string');
-a=str2double(a);
-
-% if a==0
-%     disp('You ordered no close morph operation.');
-%     return;
-% else
-    resI=closeOperation(J,a);
-    closeMorphFig=resI;
-
-    figName=handles.datauser.nameFig;
-    axes(handles.figMorph);
-    colormap gray;
-    imagesc(closeMorphFig);
-    axis image % zoom the figure to original scale
-    axis normal
-    axis off
-
-    figure;
-    imshow(closeMorphFig);
-    title(['close Morph Figure-',figName]);
-    %print(inpainFig,'-djpeg',['bright spot inpainted Figure-',figName])
-    %print(getimage(handles.figDelSpot),'-djpeg',['bright spot inpainted Figure-',figName])
-    handles.datauser.closeMorphFig=closeMorphFig;
-% end
-handles.datause.treatFig4=handles.datauser.closeMorphFig;
-guidata(hObject,handles);
-
-
-% --- Executes on button press in openMorph.
-function openMorph_Callback(hObject, eventdata, handles)
-% hObject    handle to openMorph (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-J=handles.datauser.treatFig4;
-
-a=get(handles.openSize1,'string');
-b=get(handles.openSize2,'string');
-a=str2double(a);
-b=str2double(b);
-resI=openOperation(J,a,b);
-openMorphFig=resI;
-
-figName=handles.datauser.nameFig;
-axes(handles.figMorph);
-colormap gray;
-imagesc(openMorphFig);
-axis image % zoom the figure to original scale
-axis normal
-axis off
-
-figure;
-imshow(openMorphFig);
-title(['open Morph Figure-',figName]);
-%print(inpainFig,'-djpeg',['bright spot inpainted Figure-',figName])
-%print(getimage(handles.figDelSpot),'-djpeg',['bright spot inpainted Figure-',figName])
-handles.datauser.openMorphFig=openMorphFig;
-% end
-handles.datause.treatFig4=handles.datauser.openMorphFig;
-guidata(hObject,handles);
-
-
-
-
-
-
 % --- Executes on button press in previousLoad3.
 function previousLoad3_Callback(hObject, eventdata, handles)
 % hObject    handle to previousLoad3 (see GCBO)
@@ -626,7 +538,6 @@ axis off;
 
 handles.datauser.treatFig3=J;
 handles.datauser.treatFig4=J;
-
 guidata(hObject,handles);
 
 
@@ -636,17 +547,25 @@ function loadButton3_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
+
+% --- If Enable == 'on', executes on mouse press in 5 pixel border.
+% --- Otherwise, executes on mouse press in 5 pixel border or over loadButton3.
+function loadButton3_ButtonDownFcn(hObject, eventdata, handles)
+% hObject    handle to loadButton3 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
 sel = get(gcf,'selectiontype');
 if isequal(sel,'open')
     %[file path index ] = uigetfile({'*.png;*.jpg;*.tif;*.mat'},'File Selector');
-    [file path index ] = uigetfile({'*.png;*.jpg;*.tif'},'File Selector');
+    [file,path,index ] = uigetfile({'*.png;*.jpg;*.tif'},'File Selector');
     if index==0
         return
     end
     if isequal(file,0)
         disp('please select your figure');
     else
-        str=[path file]; 
+        str=[path,file]; 
         %treatFig=load(str);
         treatFig=imread(str);
         axes(handles.figMorph);
@@ -658,12 +577,11 @@ if isequal(sel,'open')
 
 end
 
-
 n=find(str=='\',1,'last');
-nameFig=str([n+1:end]);
-figure(2);
+nameFig=str([(n+1):end]);
+figure(3);
 imshow(treatFig);
-title(['crop Figure-',nameFig]);
+%title(['treat Figure-',nameFig]);
 
 handles.datauser.treatFig3 = treatFig;
 handles.datauser.figPath=str;
@@ -672,37 +590,11 @@ handles.datauser.nameFig=nameFig;
 guidata(hObject,handles);
 
 
-% --- If Enable == 'on', executes on mouse press in 5 pixel border.
-% --- Otherwise, executes on mouse press in 5 pixel border or over loadButton3.
-function loadButton3_ButtonDownFcn(hObject, eventdata, handles)
-% hObject    handle to loadButton3 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-
 % --- Executes during object creation, after setting all properties.
 function loadButton3_CreateFcn(hObject, eventdata, handles)
 % hObject    handle to loadButton3 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
-
-
-
-% --- Executes on button press in edgePadding.
-function edgePadding_Callback(hObject, eventdata, handles)
-% hObject    handle to edgePadding (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-
-
-% --- Executes on button press in gaussFilter.
-function gaussFilter_Callback(hObject, eventdata, handles)
-% hObject    handle to gaussFilter (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-
 
 function closeDiskSize_Callback(hObject, eventdata, handles)
 % hObject    handle to closeDiskSize (see GCBO)
@@ -727,6 +619,79 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
+% --- Executes on button press in morphClose.
+function morphClose_Callback(hObject, eventdata, handles)
+% hObject    handle to morphClose (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+J=handles.datauser.treatFig3;
+figName=handles.datauser.nameFig;
+
+if ndims(J)==3
+    J=rgb2gray(J);
+end
+J = im2uint8(J);
+
+a=get(handles.closeDiskSize,'string');
+a=str2double(a);
+resI=closeOperation(J,a);
+closeMorphFig=resI;
+
+axes(handles.figMorph);
+colormap gray;
+imagesc(closeMorphFig);
+axis image % zoom the figure to original scale
+axis normal
+axis off
+
+figure;
+imshow(closeMorphFig);
+%title(['close Morph Figure-',figName]);
+handles.datauser.closeMorphFig=closeMorphFig;
+%handles.datause.treatFig4=handles.datauser.closeMorphFig;
+guidata(hObject,handles);
+
+
+% --- Executes on button press in openMorph.
+function openMorph_Callback(hObject, eventdata, handles)
+% hObject    handle to openMorph (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+if ~isempty(handles.datauser.closeMorphFig)
+    J=handles.datauser.treatFig.closeMorphFig;
+else
+    J=handles.datauser.treatFig4;
+end
+
+aStr=get(handles.openSize1,'string');
+bStr=get(handles.openSize2,'string');
+a=str2double(aStr(2)); 
+b=str2double(bStr(2)); 
+
+resI=openOperation(J,a,b);
+openMorphFig=resI;
+
+figName=handles.datauser.nameFig;
+axes(handles.figMorph);
+colormap gray;
+imagesc(openMorphFig);
+axis image % zoom the figure to original scale
+axis normal
+axis off
+
+figure;
+imshow(openMorphFig);
+title(['open Morph Figure-',figName]);
+%print(inpainFig,'-djpeg',['bright spot inpainted Figure-',figName])
+%print(getimage(handles.figDelSpot),'-djpeg',['bright spot inpainted Figure-',figName])
+handles.datauser.openMorphFig=openMorphFig;
+% end
+handles.datause.treatFig4=handles.datauser.openMorphFig;
+guidata(hObject,handles);
+
+
 function openSize1_Callback(hObject, eventdata, handles)
 % hObject    handle to openSize1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -747,7 +712,6 @@ function openSize1_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
-
 
 
 function openSize2_Callback(hObject, eventdata, handles)
@@ -780,21 +744,43 @@ function takeOut3_Callback(hObject, eventdata, handles)
 
 figName=handles.datauser.nameFig;
 
+if ~isempty(handles.datauser.closeMorphFig)
+    J=handles.datauser.treatFig.closeMorphFig;
+else
+    J=handles.datauser.treatFig4;
+end
 figure;
 colormap gray;
-imagesc(handles.datauser.treatFig4);
+imagesc(J);
 title(['morph operation-',figName]);
 %print(inpainFig,'-djpeg',['bright spot inpainted Figure-',figName])
 %print(getimage(handles.figDelSpot),'-djpeg',['bright spot inpainted Figure-',figName])
 
 guidata(hObject,handles);
 
-
 % --- Executes on button press in previousLoad4.
 function previousLoad4_Callback(hObject, eventdata, handles)
 % hObject    handle to previousLoad4 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+
+if ~isempty(handles.datauser.closeMorphFig)
+    J=handles.datauser.treatFig.closeMorphFig;
+else
+    J=handles.datauser.openMorphFig;
+end
+%J=handles.datauser.treatFig4;
+
+axes(handles.figGaussFilter);
+colormap gray;
+imagesc(J);
+axis image; % zoom the figure to original scale
+axis normal;
+axis off;
+
+handles.datauser.treatFig5=J;
+guidata(hObject,handles);
+
 
 
 % --- Executes on button press in loadButton4.
@@ -803,6 +789,51 @@ function loadButton4_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
+function loadButton4_ButtonDownFcn(hObject, eventdata, handles)
+% hObject    handle to loadButton3 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+sel = get(gcf,'selectiontype');
+if isequal(sel,'open')
+    %[file path index ] = uigetfile({'*.png;*.jpg;*.tif;*.mat'},'File Selector');
+    [file,path,index ] = uigetfile({'*.png;*.jpg;*.tif'},'File Selector');
+    if index==0
+        return
+    end
+    if isequal(file,0)
+        disp('please select your figure');
+    else
+        str=[path,file]; 
+        %treatFig=load(str);
+        treatFig=imread(str);
+        axes(handles.figGaussFilter);
+        imagesc(treatFig);
+        axis image;
+        axis normal;
+        axis off;
+    end
+
+end
+
+n=find(str=='\',1,'last');
+nameFig=str([(n+1):end]);
+figure(5);
+imshow(treatFig);
+%title(['treat Figure-',nameFig]);
+
+handles.datauser.treatFig4 = treatFig;
+handles.datauser.figPath=str;
+handles.datauser.nameFig=nameFig;
+
+guidata(hObject,handles);
+
+
+% --- Executes on button press in gaussFilter.
+function gaussFilter_Callback(hObject, eventdata, handles)
+% hObject    handle to gaussFilter (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
 
 
 function gauFilterVal_Callback(hObject, eventdata, handles)
@@ -825,6 +856,14 @@ function gauFilterVal_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+
+
+
+% --- Executes on button press in edgePadding.
+function edgePadding_Callback(hObject, eventdata, handles)
+% hObject    handle to edgePadding (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
 
 
 % --- Executes on button press in takeOut4.
