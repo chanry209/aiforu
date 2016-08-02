@@ -1,5 +1,8 @@
-function J=paddingEdge(I)
+function resI=paddingEdge(I)
 %%% padding the edges of images by the neighbor pixel
+if ndims(I)==3
+   I=rgb2gray(I);
+end
 J=I;
 [m,n]=size(I);
 
@@ -34,6 +37,8 @@ for j=fix(n/2)+1:n
         end
     end
 end
+
+resI=J;
 
 % figure;
 % subplot(2,1,1);

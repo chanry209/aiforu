@@ -1,6 +1,9 @@
 function resI = gaussian_lowpass_filter(I,fc)
 
 %%% gaussian filter allows the low frequence pass
+if ndims(I)==3
+    I=rgb2gray(I);
+end
 [m,n]=size(I);
 
 tf=fft2(double(I));
@@ -22,7 +25,7 @@ tempImage=tf.*Ff;
 % inverser le shif de la FFT filtre
 tfi=ifft2(ifftshift(tempImage));
 resI=tfi;
-resI=1+log(abs(resI));
+%resI=1+log(abs(resI));
 
 
 % figure;

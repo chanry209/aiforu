@@ -22,7 +22,7 @@ function varargout = ISEEU_TREATEMENT(varargin)
 
 % Edit the above text to modify the response to help ISEEU_TREATEMENT
 
-% Last Modified by GUIDE v2.5 01-Aug-2016 11:44:11
+% Last Modified by GUIDE v2.5 02-Aug-2016 15:53:42
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -568,6 +568,7 @@ if isequal(sel,'open')
         str=[path,file]; 
         %treatFig=load(str);
         treatFig=imread(str);
+        % show figure in the axes
         axes(handles.figMorph);
         imagesc(treatFig);
         axis image;
@@ -647,10 +648,32 @@ axis off
 
 figure;
 imshow(closeMorphFig);
-%title(['close Morph Figure-',figName]);
+title(['close Morph Figure-',figName]);
 handles.datauser.closeMorphFig=closeMorphFig;
-%handles.datause.treatFig4=handles.datauser.closeMorphFig;
+handles.datause.treatFig4=handles.datauser.closeMorphFig;
 guidata(hObject,handles);
+
+
+function closeSize_Callback(hObject, eventdata, handles)
+% hObject    handle to closeSize (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of closeSize as text
+%        str2double(get(hObject,'String')) returns contents of closeSize as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function closeSize_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to closeSize (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
 
 
 % --- Executes on button press in openMorph.
@@ -659,11 +682,7 @@ function openMorph_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-if ~isempty(handles.datauser.closeMorphFig)
-    J=handles.datauser.treatFig.closeMorphFig;
-else
-    J=handles.datauser.treatFig4;
-end
+J=handles.datauser.treatFig4;
 
 aStr=get(handles.openSize1,'string');
 bStr=get(handles.openSize2,'string');
@@ -764,12 +783,7 @@ function previousLoad4_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-if ~isempty(handles.datauser.closeMorphFig)
-    J=handles.datauser.treatFig.closeMorphFig;
-else
-    J=handles.datauser.openMorphFig;
-end
-%J=handles.datauser.treatFig4;
+J=handles.datauser.treatFig4;
 
 axes(handles.figGaussFilter);
 colormap gray;
@@ -796,7 +810,6 @@ function loadButton4_ButtonDownFcn(hObject, eventdata, handles)
 
 sel = get(gcf,'selectiontype');
 if isequal(sel,'open')
-    %[file path index ] = uigetfile({'*.png;*.jpg;*.tif;*.mat'},'File Selector');
     [file,path,index ] = uigetfile({'*.png;*.jpg;*.tif'},'File Selector');
     if index==0
         return
@@ -807,6 +820,8 @@ if isequal(sel,'open')
         str=[path,file]; 
         %treatFig=load(str);
         treatFig=imread(str);
+        % show figure in the axes
+        %handles.datauser.treatFig5=treatFig;
         axes(handles.figGaussFilter);
         imagesc(treatFig);
         axis image;
@@ -818,11 +833,11 @@ end
 
 n=find(str=='\',1,'last');
 nameFig=str([(n+1):end]);
-figure(5);
-imshow(treatFig);
+% figure(4);
+% imshow(treatFig);
 %title(['treat Figure-',nameFig]);
 
-handles.datauser.treatFig4 = treatFig;
+handles.datauser.treatFig5 = treatFig;
 handles.datauser.figPath=str;
 handles.datauser.nameFig=nameFig;
 
@@ -834,6 +849,33 @@ function gaussFilter_Callback(hObject, eventdata, handles)
 % hObject    handle to gaussFilter (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+
+J=handles.datauser.treatFig5;
+
+freq=get(handles.gauFilterVal,'value');
+%freq=str2double(freq_Str(2));
+
+resI = gaussian_lowpass_filter(J,freq);
+%resI=1+log(abs(resI));
+gaussFilterFig=resI;
+
+axes(handles.figGaussFilter);
+colormap gray;
+imagesc(1+log(abs(gaussFilterFig)));
+axis image % zoom the figure to original scale
+axis normal
+axis off
+
+figName=handles.datauser.nameFig;
+figure;
+colormap gray;
+imagesc(1+log(abs(gaussFilterFig)));
+title(['guass filter Figure-',figName]);
+
+
+handles.datauser.gaussFilterFig=gaussFilterFig;
+handles.datause.treatFig6=handles.datauser.gaussFilterFig;
+guidata(hObject,handles);
 
 
 function gauFilterVal_Callback(hObject, eventdata, handles)
@@ -858,6 +900,22 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
+% --- Executes on button press in takeOut4.
+function takeOut4_Callback(hObject, eventdata, handles)
+% hObject    handle to takeOut4 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+J=handles.datauser.gaussFilterFig
+figName=handles.datauser.nameFig;
+figure;
+colormap gray;
+imagesc(1+log(abs(J)));
+title(['gauss filter operation-',figName]);
+
+guidata(hObject,handles);
+
+
 
 % --- Executes on button press in edgePadding.
 function edgePadding_Callback(hObject, eventdata, handles)
@@ -865,12 +923,29 @@ function edgePadding_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
+J=handles.datauser.treatFig6;
+resI=paddingEdge(J);
 
-% --- Executes on button press in takeOut4.
-function takeOut4_Callback(hObject, eventdata, handles)
-% hObject    handle to takeOut4 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
+edgesPaddingFig=resI;
+
+axes(handles.figEdgesPadding);
+colormap gray;
+imagesc(resI);
+%imagesc(edgesPaddingFig);
+axis image % zoom the figure to original scale
+axis normal
+axis off
+
+figName=handles.datauser.nameFig;
+figure;
+colormap gray;
+imagesc(edgesPaddingFig);
+title(['edges padding Figure -',figName]);
+
+
+handles.datauser.edgesPaddingFig=edgesPaddingFig;
+handles.datause.treatFig7=handles.datauser.edgesPaddingFig;
+guidata(hObject,handles);
 
 
 % --- Executes on button press in takeOut5.
@@ -879,6 +954,84 @@ function takeOut5_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
+J=handles.datauser.edgesPaddingFig;
+figName=handles.datauser.nameFig;
+figure;
+colormap gray;
+imagesc(edgesPaddingFig);
+title(['edges padding Figure -',figName]);
+
+guidata(hObject,handles);
+
+
+% --- Executes on button press in previousLoad5.
+function previousLoad5_Callback(hObject, eventdata, handles)
+% hObject    handle to previousLoad5 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+J=handles.datause.treatFig6;
+
+axes(handles.figEdgesPadding);
+colormap gray;
+imagesc(1+log(abs(J)));
+axis image; % zoom the figure to original scale
+axis normal;
+axis off;
+
+handles.datauser.treatFig6=J;
+guidata(hObject,handles);
+
+
+% --- Executes on button press in loadButton5.
+function loadButton5_Callback(hObject, eventdata, handles)
+% hObject    handle to loadButton5 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --- If Enable == 'on', executes on mouse press in 5 pixel border.
+% --- Otherwise, executes on mouse press in 5 pixel border or over loadButton5.
+function loadButton5_ButtonDownFcn(hObject, eventdata, handles)
+% hObject    handle to loadButton5 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+sel = get(gcf,'selectiontype');
+if isequal(sel,'open')
+    [file,path,index ] = uigetfile({'*.png;*.jpg;*.tif'},'File Selector');
+    if index==0
+        return
+    end
+    if isequal(file,0)
+        disp('please select your figure');
+    else
+        str=[path,file]; 
+        %treatFig=load(str);
+        treatFig=imread(str);
+        % show figure in the axes
+        %handles.datauser.treatFig5=treatFig;
+        axes(handles.figEdgesPadding);
+        imagesc(treatFig);
+        axis image;
+        axis normal;
+        axis off;
+    end
+
+end
+
+n=find(str=='\',1,'last');
+nameFig=str([(n+1):end]);
+% figure(4);
+% imshow(treatFig);
+% title(['treat Figure-',nameFig]);
+
+handles.datauser.treatFig6 = treatFig;
+handles.datauser.figPath=str;
+handles.datauser.nameFig=nameFig;
+
+guidata(hObject,handles);
 
 
 function inpaintVal2_Callback(hObject, eventdata, handles)
@@ -902,47 +1055,3 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
     set(hObject,'BackgroundColor','white');
 end
 
-
-function closeSize_Callback(hObject, eventdata, handles)
-% hObject    handle to closeSize (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of closeSize as text
-%        str2double(get(hObject,'String')) returns contents of closeSize as a double
-
-
-% --- Executes during object creation, after setting all properties.
-function closeSize_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to closeSize (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
-
-
-function gauFreq_Callback(hObject, eventdata, handles)
-% hObject    handle to gauFreq (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of gauFreq as text
-%        str2double(get(hObject,'String')) returns contents of gauFreq as a double
-
-
-% --- Executes during object creation, after setting all properties.
-function gauFreq_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to gauFreq (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
