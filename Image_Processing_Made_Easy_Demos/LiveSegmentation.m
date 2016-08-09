@@ -6,7 +6,9 @@ imaqreset; %Disconnect and delete all image acquisition objects
 %% Setup Image Acquisition
 % hCamera = videoinput('winvideo',1,'RGB24_640x480');
 % maybe need to install supportPackageInstaller - OS Generic Video Interface
-hCamera = videoinput('winvideo',1,'YUY2_640x480');
+%hCamera = videoinput('winvideo',1,'YUY2_640x480');
+hCamera = videoinput('winvideo',1,'MJPG_1280x720');
+
 hCamera.ReturnedColorspace = 'rgb';
 hCamera.FramesPerTrigger = 1;
 

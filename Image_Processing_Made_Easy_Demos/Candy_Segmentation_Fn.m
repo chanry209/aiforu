@@ -24,7 +24,8 @@ Icomp = imcomplement(Isum); %In the complement of a binary image,
 Ifilled = imfill(Icomp,'holes');
 
 % 2-3 clear the noise
-se = strel('rectangle',[10,12]); %Create morphological structuring element 
+se = strel('disk',10);
+%se = strel('rectangle',[10,12]); %Create morphological structuring element 
 Iopenned = imopen(Ifilled,se); % performs morphological opening on 
 % the grayscale or binary image IM with the structuring element SE
 
