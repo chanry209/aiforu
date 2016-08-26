@@ -61,6 +61,7 @@ end
 
 %% Ignore the highlights  (top ?%)
 Inew=I;
+%percent=0.2
 for j=1:n
     temp=sort(unique(I(:,j)));
     length=size(temp,1);
@@ -73,13 +74,13 @@ for j=1:n
     end
 end
 
-% figure;
-% subplot(2,1,1);
-% imshow(I);
-% title('Figure originale');
-% subplot(2,1,2)
-% imshow(Inew);
-% title('Figure after ignore the highlights');
+figure;
+subplot(2,1,1);
+imshow(I);
+title('Figure originale');
+subplot(2,1,2)
+imshow(Inew);
+title('Figure after ignore the highlights');
 
 %% padding edges
 Inew2=Inew;
@@ -113,15 +114,15 @@ for j=fix(n/2)+1:n
     end
 end
 
-% figure;
-% subplot(2,1,1);
-% colormap gray;
-% imagesc(Inew);
-% title('Figure after ignore the highlights')
-% subplot(2,1,2)
-% colormap gray;
-% imagesc(Inew2);
-% title('Figure after padding edges');
+figure;
+subplot(2,1,1);
+colormap gray;
+imagesc(Inew);
+title('Figure after ignore the highlights')
+subplot(2,1,2)
+colormap gray;
+imagesc(Inew2);
+title('Figure after padding edges');
 
 %% increases the contrast of image by adjust image intensity values
 %Inew2=imadjust(Inew,[0.05,0.95]);
@@ -143,13 +144,13 @@ G=uint8(real(Iglpf));
 %% Enhance contrast using histogram equalization (maximise l'entropie)
 G=histeq(G);    
 
-% figure;
-% subplot(2,1,1);
-% imshow(Inew);
-% title('Figure after increase contrast');
-% subplot(2,1,2)
-% imshow(G);
-% title(['Figure after gauss low pass filter ',num2str(glpf_fc)]);
+figure;
+subplot(2,1,1);
+imshow(Inew);
+title('Figure after increase contrast');
+subplot(2,1,2)
+imshow(G);
+title(['Figure after gauss low pass filter ',num2str(glpf_fc)]);
 
 %% closing morphological operation for bridge the emply of band
 % use rectangular structure element of  m x n pixels

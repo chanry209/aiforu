@@ -104,24 +104,22 @@ if isequal(sel,'open')
         disp('please select your figure');
     else
         str=[path file]; 
-        %treatFig=load(str);
         treatFig=imread(str);
     end
     handles.datauser.treatFig=treatFig;
+    % show the treatFigure in the axes
+    axes(handles.treatFig)
+    imshow(handles.datauser.treatFig);
+    axis image
+    axis normal
+    axis off
+
+    handles.datauser.treatFig = treatFig;
+    handles.datauser.figPath=str;
+    n=find(handles.datauser.figPath=='\',1,'last');
+    nameFig=str([(n+1):end]);
+    handles.datauser.nameFig=nameFig;
 end
-
-% show the treatFigure in the axes
-axes(handles.treatFig)
-imshow(handles.datauser.treatFig);
-axis image
-axis normal
-axis off
-
-handles.datauser.treatFig = treatFig;
-handles.datauser.figPath=str;
-n=find(handles.datauser.figPath=='\',1,'last');
-nameFig=str([(n+1):end]);
-handles.datauser.nameFig=nameFig;
 
 guidata(hObject,handles);
 

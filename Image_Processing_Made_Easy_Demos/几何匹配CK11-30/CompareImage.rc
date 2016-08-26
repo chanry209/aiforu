@@ -1,0 +1,282 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Chinese (P.R.C.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+#ifdef _WIN32
+LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
+#pragma code_page(936)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// 24
+//
+
+1                       24      MOVEABLE PURE   "winxpfg.bin"
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 4, 2\r\n"
+    "#pragma code_page(936)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\CompareImage.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""l.chs\\afxres.rc""          // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\Tools.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOG DISCARDABLE  0, 0, 235, 55
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "关于 CompareImage"
+FONT 9, "宋体"
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,11,17,20,20
+    LTEXT           "CompareImage 1.0 版",IDC_STATIC,40,10,119,8,SS_NOPREFIX
+    LTEXT           "版权所有 (C) 2007",IDC_STATIC,40,25,119,8
+    DEFPUSHBUTTON   "确定",IDOK,178,7,50,14,WS_GROUP
+END
+
+IDD_COMPAREIMAGE_DIALOG DIALOGEX 0, 0, 599, 395
+STYLE DS_MODALFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | 
+    WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "CompareImage"
+FONT 9, "宋体", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_PORFILE_RECT,"Static",SS_BLACKFRAME,5,9,491,368
+    PUSHBUTTON      "打开图像",IDC_OpenImage,505,227,38,16
+    LTEXT           "图像信息：",IDC_IMAGE_INFO,6,382,235,8
+    GROUPBOX        "参数设置",IDC_STATIC,506,12,88,115
+    LTEXT           "搜索数量",IDC_STATIC,511,29,32,8
+    LTEXT           "最小分数",IDC_STATIC,511,45,32,8
+    LTEXT           "边缘阈值",IDC_STATIC,511,63,32,8
+    LTEXT           "最短边缘",IDC_STATIC,511,79,32,8
+    LTEXT           "搜索级别",IDC_STATIC,511,95,32,8
+    LTEXT           "重叠距离",IDC_STATIC,511,111,32,8
+    EDITTEXT        IDC_P1,550,28,35,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_P2,550,43,35,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_P3,550,59,35,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_P4,550,75,35,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_P5,550,92,35,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_P6,550,108,35,14,ES_AUTOHSCROLL
+    CONTROL         "显示位置",IDC_DRAW_RECT,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,507,197,45,8
+    CONTROL         "显示模板边缘",IDC_DRAW_EDGE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,507,210,60,8
+    PUSHBUTTON      "开始采集",IDC_StartCollection,505,284,38,16
+    PUSHBUTTON      "停止采集",IDC_StopCollection,555,284,38,16
+    PUSHBUTTON      "创建模板",IDC_CreateModel,505,246,38,16
+    PUSHBUTTON      "编辑模板",IDC_EditModel,555,246,38,16
+    PUSHBUTTON      "搜  索",IDC_SearchObject,555,227,38,16
+    CONTROL         "List1",IDC_LIST1,"SysListView32",LVS_REPORT | WS_BORDER | 
+                    WS_TABSTOP,504,325,91,51
+    PUSHBUTTON      "装载模板",IDC_LoadModel,505,265,38,16
+    PUSHBUTTON      "保存模板",IDC_SaveModel,555,265,38,16
+    PUSHBUTTON      "搜索范围",IDC_Rect,505,303,38,16
+    PUSHBUTTON      "清除范围",IDC_ClearRect,555,303,38,16
+    LTEXT           "左",IDC_STATIC,508,135,8,8
+    LTEXT           "上",IDC_STATIC,517,135,8,8
+    LTEXT           "右",IDC_STATIC,508,154,8,8
+    LTEXT           "下",IDC_STATIC,517,155,8,8
+    EDITTEXT        IDC_P7,528,133,27,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_P8,558,133,27,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_P9,528,152,27,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_P10,558,152,27,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "设置搜索范围",IDC_SetSearchArea,506,172,80,16
+    LTEXT           "time",IDC_TIMER,359,379,137,14,SS_CENTERIMAGE,
+                    WS_EX_STATICEDGE
+END
+
+IDD_MODEL_EDIT_DLG DIALOG DISCARDABLE  0, 0, 406, 297
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "创建和编辑模板"
+FONT 10, "新宋体"
+BEGIN
+    DEFPUSHBUTTON   "确定",IDOK,349,215,32,14
+    PUSHBUTTON      "取消",IDCANCEL,350,236,31,14
+    CONTROL         "",IDC_MODEL_RECT,"Static",SS_BLACKFRAME,3,6,320,281
+    GROUPBOX        "模板类型",IDC_STATIC,330,9,72,32
+    COMBOBOX        IDC_COMBO1,333,22,67,14,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    GROUPBOX        "参数设置",IDC_STATIC,330,44,72,118
+    LTEXT           "最小角度",IDC_S1,335,57,32,8
+    LTEXT           "最大角度",IDC_S2,335,71,32,8
+    LTEXT           "最小比例",IDC_S3,335,87,32,8
+    LTEXT           "最大比例",IDC_S4,335,102,32,8
+    LTEXT           "边缘阈值",IDC_S5,335,116,32,8
+    LTEXT           "最短边缘",IDC_S6,335,131,32,8
+    LTEXT           "边缘间隔",IDC_S7,335,144,32,8
+    EDITTEXT        IDC_EDIT1,371,55,27,13,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT2,371,70,27,13,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT3,371,84,27,13,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT4,371,99,27,13,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT5,371,113,27,13,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT6,371,128,27,13,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT7,371,142,27,13,ES_AUTOHSCROLL
+    GROUPBOX        "编辑功能",IDC_STATIC,330,163,72,41
+    CONTROL         "恢复",IDC_ADD_EDGE,"Button",BS_AUTORADIOBUTTON,336,172,
+                    25,8
+    CONTROL         "擦除",IDC_DEL_EDGE,"Button",BS_AUTORADIOBUTTON,336,186,
+                    25,8
+    LTEXT           "笔宽：",IDC_STATIC,368,173,24,8
+    EDITTEXT        IDC_EDIT8,368,185,24,12,ES_AUTOHSCROLL
+    CONTROL         "Spin1",IDC_SPIN1,"msctls_updown32",UDS_SETBUDDYINT | 
+                    UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS,392,185,7,
+                    13
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "080404B0"
+        BEGIN
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "CompareImage Microsoft 基础类应用程序\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "CompareImage\0"
+            VALUE "LegalCopyright", "版权所有 (C) 2007\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "CompareImage.EXE\0"
+            VALUE "ProductName", "CompareImage 应用程序\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x804, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 228
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 48
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ABOUTBOX            "关于 CompareImage(&A)..."
+END
+
+#endif    // Chinese (P.R.C.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+#ifdef _WIN32
+LANGUAGE 4, 2
+#pragma code_page(936)
+#endif //_WIN32
+#include "res\CompareImage.rc2"  // non-Microsoft Visual C++ edited resources
+#include "l.chs\afxres.rc"          // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

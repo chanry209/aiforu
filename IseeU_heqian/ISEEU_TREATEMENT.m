@@ -22,7 +22,7 @@ function varargout = ISEEU_TREATEMENT(varargin)
 
 % Edit the above text to modify the response to help ISEEU_TREATEMENT
 
-% Last Modified by GUIDE v2.5 02-Aug-2016 15:53:42
+% Last Modified by GUIDE v2.5 26-Aug-2016 03:01:12
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -159,7 +159,6 @@ if isequal(sel,'open')
     if isempty(str)
         return
     end
-    
     handles.datauser.fileName = str;
 end
 
@@ -187,7 +186,7 @@ I = handles.datauser.newFig;
 I=im2uint8(I);  % convert image to 8bit unsighed integers
 
 n=find(name=='\',1,'last');
-nameFig=name([n+1:end]);
+nameFig=name([(n+1):end]);
 figure(2);
 imshow(I);
 %title(['crop Figure-',nameFig]);
@@ -283,27 +282,28 @@ if isequal(sel,'open')
         disp('please select your figure');
     else
         str=[path file]; 
-        %treatFig=load(str);
         treatFig=imread(str);
+        handles.datauser.fileName = str;
         axes(handles.figDelSpot);
         imagesc(treatFig);
         axis image;
         axis normal;
         axis off;
     end
+    str=handles.datauser.fileName;
+    n=find(str=='\',1,'last');
+    nameFig=str([(n+1):end]);
+    figure(2);
+    imshow(treatFig);
+    title(['crop Figure-',nameFig]);
+
+    handles.datauser.treatFig = treatFig;
+    handles.datauser.figPath=str;
+    handles.datauser.nameFig=nameFig;
 
 end
 
 
-n=find(str=='\',1,'last');
-nameFig=str([n+1:end]);
-figure(2);
-imshow(treatFig);
-title(['crop Figure-',nameFig]);
-
-handles.datauser.treatFig = treatFig;
-handles.datauser.figPath=str;
-handles.datauser.nameFig=nameFig;
 
 guidata(hObject,handles);
 
@@ -316,11 +316,8 @@ function previousLoad1_Callback(hObject, eventdata, handles)
 J=handles.datauser.newFig;
 handles.datauser.treatFig=J;
 
-% n=find(name=='\',1,'last');
-% nameFig=name([n+1:end]);
 imshow(J);
 % title(['crop Figure-',nameFig]);
-
 axes(handles.figDelSpot);
 colormap gray;
 imagesc(J);
@@ -456,24 +453,24 @@ if isequal(sel,'open')
         str=[path file]; 
         %treatFig=load(str);
         treatFig=imread(str);
+        handles.datauser.fileName = str;
         axes(handles.figAjustContrast);
         imagesc(treatFig);
         axis image;
         axis normal;
         axis off;
     end
+    str=handles.datauser.fileName;
+    n=find(str=='\',1,'last');
+    nameFig=str([(n+1):end]);
+    figure(2);
+    imshow(treatFig);
+    title(['crop Figure-',nameFig]);
 
+    handles.datauser.treatFig2 = treatFig;
+    handles.datauser.figPath=str;
+    handles.datauser.nameFig=nameFig;
 end
-
-n=find(str=='\',1,'last');
-nameFig=str([n+1:end]);
-figure(2);
-imshow(treatFig);
-title(['crop Figure-',nameFig]);
-
-handles.datauser.treatFig2 = treatFig;
-handles.datauser.figPath=str;
-handles.datauser.nameFig=nameFig;
 
 guidata(hObject,handles);
 
@@ -569,24 +566,24 @@ if isequal(sel,'open')
         %treatFig=load(str);
         treatFig=imread(str);
         % show figure in the axes
+        handles.datauser.fileName = str;
         axes(handles.figMorph);
         imagesc(treatFig);
         axis image;
         axis normal;
         axis off;
     end
+    str=handles.datauser.fileName;
+    n=find(str=='\',1,'last');
+    nameFig=str([(n+1):end]);
+    figure(3);
+    imshow(treatFig);
+    title(['treat Figure-',nameFig]);
 
+    handles.datauser.treatFig3 = treatFig;
+    handles.datauser.figPath=str;
+    handles.datauser.nameFig=nameFig;
 end
-
-n=find(str=='\',1,'last');
-nameFig=str([(n+1):end]);
-figure(3);
-imshow(treatFig);
-%title(['treat Figure-',nameFig]);
-
-handles.datauser.treatFig3 = treatFig;
-handles.datauser.figPath=str;
-handles.datauser.nameFig=nameFig;
 
 guidata(hObject,handles);
 
@@ -686,8 +683,8 @@ J=handles.datauser.treatFig4;
 
 aStr=get(handles.openSize1,'string');
 bStr=get(handles.openSize2,'string');
-a=str2double(aStr(2)); 
-b=str2double(bStr(2)); 
+a=str2double(aStr); 
+b=str2double(bStr); 
 
 resI=openOperation(J,a,b);
 openMorphFig=resI;
@@ -762,12 +759,8 @@ function takeOut3_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 figName=handles.datauser.nameFig;
+J=handles.datauser.treatFig4;
 
-if ~isempty(handles.datauser.closeMorphFig)
-    J=handles.datauser.treatFig.closeMorphFig;
-else
-    J=handles.datauser.treatFig4;
-end
 figure;
 colormap gray;
 imagesc(J);
@@ -821,25 +814,24 @@ if isequal(sel,'open')
         %treatFig=load(str);
         treatFig=imread(str);
         % show figure in the axes
-        %handles.datauser.treatFig5=treatFig;
+        handles.datauser.fileName = str;
         axes(handles.figGaussFilter);
         imagesc(treatFig);
         axis image;
         axis normal;
         axis off;
     end
+    str=handles.datauser.fileName;
+    n=find(str=='\',1,'last');
+    nameFig=str([(n+1):end]);
+    figure(4);
+    imshow(treatFig);
+    title(['treat Figure-',nameFig]);
 
+   handles.datauser.treatFig5 = treatFig;
+   handles.datauser.figPath=str;
+   handles.datauser.nameFig=nameFig;
 end
-
-n=find(str=='\',1,'last');
-nameFig=str([(n+1):end]);
-% figure(4);
-% imshow(treatFig);
-%title(['treat Figure-',nameFig]);
-
-handles.datauser.treatFig5 = treatFig;
-handles.datauser.figPath=str;
-handles.datauser.nameFig=nameFig;
 
 guidata(hObject,handles);
 
@@ -852,16 +844,16 @@ function gaussFilter_Callback(hObject, eventdata, handles)
 
 J=handles.datauser.treatFig5;
 
-freq=get(handles.gauFilterVal,'value');
-%freq=str2double(freq_Str(2));
-
+freq=get(handles.gauSlideVal,'value');
+freq=int32(freq);
 resI = gaussian_lowpass_filter(J,freq);
-%resI=1+log(abs(resI));
-gaussFilterFig=resI;
 
+gaussFilterFig=resI;
 axes(handles.figGaussFilter);
 colormap gray;
-imagesc(1+log(abs(gaussFilterFig)));
+%imagesc(gaussFilterFig);
+imagesc(1+log(abs(resI)));
+%imagesc(1+log(abs(gaussFilterFig)));
 axis image % zoom the figure to original scale
 axis normal
 axis off
@@ -869,7 +861,7 @@ axis off
 figName=handles.datauser.nameFig;
 figure;
 colormap gray;
-imagesc(1+log(abs(gaussFilterFig)));
+imagesc(1+log(abs(resI)));
 title(['guass filter Figure-',figName]);
 
 
@@ -877,19 +869,23 @@ handles.datauser.gaussFilterFig=gaussFilterFig;
 handles.datause.treatFig6=handles.datauser.gaussFilterFig;
 guidata(hObject,handles);
 
-
-function gauFilterVal_Callback(hObject, eventdata, handles)
-% hObject    handle to gauFilterVal (see GCBO)
+function gauSlideVal_Callback(hObject, eventdata, handles)
+% hObject    handle to openSize2 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: get(hObject,'String') returns contents of gauFilterVal as text
-%        str2double(get(hObject,'String')) returns contents of gauFilterVal as a double
+% Hints: get(hObject,'String') returns contents of openSize2 as text
+%        str2double(get(hObject,'String')) returns contents of openSize2 as a double
+gauFilterVal=get(handles.gauSlideVal,'value');
+gauFilterVal=int32(gauFilterVal);
+set(handles.editSlide,'string',num2str(gauFilterVal));
 
+
+guidata(hObject,handles);
 
 % --- Executes during object creation, after setting all properties.
-function gauFilterVal_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to gauFilterVal (see GCBO)
+function gauSlideVal_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to openSize2 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -898,6 +894,23 @@ function gauFilterVal_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+
+function editSlide_Callback(hObject, eventdata, handles)
+% hObject    handle to editSlide (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of editSlide as text
+%        str2double(get(hObject,'String')) returns contents of editSlide as a double
+gauFilterVal=get(handles.gauSlideVal,'val');
+gauFilterVal=str2num(gauFilterVal);
+if (isempty(gauFilterVal) || gauFilterVal < 10 || gauFilterVal > 100)
+    set(handles.gauSlideVal,'Value',0);
+    set(handles.sliderVal,'Value',0);
+else
+    set(handles.sliderVal,'Value',gauFilterVal);
+end
+
 
 
 % --- Executes on button press in takeOut4.
@@ -958,7 +971,7 @@ J=handles.datauser.edgesPaddingFig;
 figName=handles.datauser.nameFig;
 figure;
 colormap gray;
-imagesc(edgesPaddingFig);
+imagesc(J);
 title(['edges padding Figure -',figName]);
 
 guidata(hObject,handles);
@@ -1011,7 +1024,7 @@ if isequal(sel,'open')
         %treatFig=load(str);
         treatFig=imread(str);
         % show figure in the axes
-        %handles.datauser.treatFig5=treatFig;
+        handles.datauser.fileName = str;
         axes(handles.figEdgesPadding);
         imagesc(treatFig);
         axis image;
@@ -1019,18 +1032,18 @@ if isequal(sel,'open')
         axis off;
     end
 
+    str=handles.datauser.fileName;
+    n=find(str=='\',1,'last');
+    nameFig=str([(n+1):end]);
+    figure(5);
+    imshow(treatFig);
+    title(['treat Figure-',nameFig]);
+
+    handles.datauser.treatFig6 = treatFig;
+    handles.datauser.figPath=str;
+    handles.datauser.nameFig=nameFig;
+
 end
-
-n=find(str=='\',1,'last');
-nameFig=str([(n+1):end]);
-% figure(4);
-% imshow(treatFig);
-% title(['treat Figure-',nameFig]);
-
-handles.datauser.treatFig6 = treatFig;
-handles.datauser.figPath=str;
-handles.datauser.nameFig=nameFig;
-
 guidata(hObject,handles);
 
 
@@ -1055,3 +1068,304 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
     set(hObject,'BackgroundColor','white');
 end
 
+
+% --- Executes on button press in autoLoadButton.
+function autoLoadButton_Callback(hObject, eventdata, handles)
+% hObject    handle to autoLoadButton (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --- If Enable == 'on', executes on mouse press in 5 pixel border.
+% --- Otherwise, executes on mouse press in 5 pixel border or over autoLoadButton.
+function autoLoadButton_ButtonDownFcn(hObject, eventdata, handles)
+% hObject    handle to autoLoadButton (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+sel = get(gcf,'selectiontype');
+if isequal(sel,'open')
+    [file,path,index ] = uigetfile({'*.png;*.jpg;*.tif'},'File Selector');
+    if index==0
+        return
+    end
+    if isequal(file,0)
+        disp('please select your figure');
+    else
+        str=[path,file]; 
+        %treatFig=load(str);
+        treatFig=imread(str);
+        % show figure in the axes
+        handles.datauser.fileName = str;
+        axes(handles.figAlloperation);
+        imagesc(treatFig);
+        axis image;
+        axis normal;
+        axis off;
+    end
+    str=handles.datauser.fileName;
+    n=find(str=='\',1,'last');
+    nameFig=str([(n+1):end]);
+%     figure(4);
+%     imshow(treatFig);
+%     title(['treat Figure-',nameFig]);
+
+   handles.datauser.treatFig5 = treatFig;
+   handles.datauser.figPath=str;
+   handles.datauser.nameFig=nameFig;
+end
+
+guidata(hObject,handles);
+
+
+% --- Executes on button press in autoPrecessingButton.
+function autoPrecessingButton_Callback(hObject, eventdata, handles)
+% hObject    handle to autoPrecessingButton (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+I= handles.datauser.treatFig5;
+if (ndims(I)==3)  
+    I=rgb2gray(I);
+end
+
+% histogramme and the distribution of pixel of each column
+[m,n]=size(I);
+L=256;
+histo=zeros(L,1);
+
+for i=1:m
+    for j=1:n
+        histo(I(i,j)+1)=histo(I(i,j)+1)+1;    % histogramme
+    end
+end
+
+histo1=histo/(m*n);   
+
+meanI=zeros(1,n);  
+medianI = zeros(1,n);
+for j=1:n
+    meanI(j)=mean(I(:,j));   % mean pixel of each column
+end
+
+for j=1:n
+    medianI(j)=median(I(:,j));   % median pixel of each column
+end
+
+
+%%%  Ignore the top 20% highlights defaut
+Inew1=I;
+%percent=0.2
+for j=1:n
+    temp=sort(unique(I(:,j)));
+    length=size(temp,1);
+    threshold=temp(round(0.2*length)+1);
+    
+    for i=1:m
+        if Inew1(i,j)>threshold
+            Inew1(i,j)=medianI(j);
+        end
+    end
+end
+
+figure;
+subplot(2,1,1);
+imshow(I);
+title('Figure originale');
+subplot(2,1,2)
+imshow(Inew1);
+title('Figure after ignore the highlights');
+
+
+%%% increases the contrast of image by adjust image intensity values
+Inew2=imadjust(Inew1);
+Inew2=histeq(Inew2); % enhance contrast by histogram equalization (maxi l'entropie) 
+figure;
+colormap gray;
+imagesc(Inew2);
+title('Figure afpter increase contrast');
+
+%%% operation open and close
+Inew3=closeOperation(Inew2,3);
+Inew4=openOperation(Inew3,3,5);
+
+%%%% filtre base-pass gaussian (Glpf:Gaussian low pass filter)
+glfp_fc=10:10:100;
+% global Inew3_1;
+% global Inew3_2;
+% global Inew3_3;
+% global Inew3_4;
+% global Inew3_5;
+% global Inew3_6;
+% global Inew3_7;
+% global Inew3_8;
+% global Inew3_9;
+% global Inew3_10;
+Inew5_1 = gaussian_lowpass_filter(Inew4,glfp_fc(1)); 
+Inew5_2 = gaussian_lowpass_filter(Inew4,glfp_fc(2));
+Inew5_3 = gaussian_lowpass_filter(Inew4,glfp_fc(3));
+Inew5_4 = gaussian_lowpass_filter(Inew4,glfp_fc(4));
+Inew5_5 = gaussian_lowpass_filter(Inew4,glfp_fc(5));
+Inew5_6 = gaussian_lowpass_filter(Inew4,glfp_fc(6));
+Inew5_7 = gaussian_lowpass_filter(Inew4,glfp_fc(7));
+Inew5_8 = gaussian_lowpass_filter(Inew4,glfp_fc(8));
+Inew5_9 = gaussian_lowpass_filter(Inew4,glfp_fc(9));
+Inew5_10 = gaussian_lowpass_filter(Inew4,glfp_fc(10));
+
+figure;
+subplot(2,2,1);
+colormap gray;
+imagesc(Inew2);
+title('Figure after increase contrast');
+hold on;
+subplot(2,2,2)
+colormap gray;
+imagesc(1+log(abs(Inew5_1)));
+title(['Figure 1,freq ',num2str(glfp_fc(1))]);
+hold on;
+subplot(2,2,3)
+colormap gray;
+imagesc(1+log(abs(Inew5_2)));
+title(['Figure 2 freq ',num2str(glfp_fc(2))]);
+hold on;
+subplot(2,2,4)
+colormap gray;
+imagesc(1+log(abs(Inew5_3)));
+title(['Figure 3 freq ',num2str(glfp_fc(3))]);
+
+figure;
+subplot(2,2,1);
+colormap gray;
+imagesc(1+log(abs(Inew5_4)));
+title(['Figure 4 freq ',num2str(glfp_fc(4))]);
+hold on
+subplot(2,2,2);
+colormap gray;
+imagesc(1+log(abs(Inew5_5)));
+title(['Figure 5 freq ',num2str(glfp_fc(5))]);
+hold on;
+subplot(2,2,3)
+colormap gray;
+imagesc(1+log(abs(Inew5_6)));
+title(['Figure 6 freq ',num2str(glfp_fc(6))]);
+hold on;
+subplot(2,2,4)
+colormap gray;
+imagesc(1+log(abs(Inew5_7)));
+title(['Figure 7, freq ',num2str(glfp_fc(7))]);
+
+figure;
+subplot(3,1,1);
+colormap gray;
+imagesc(1+log(abs(Inew5_8)));
+title(['Figure 8 freq ',num2str(glfp_fc(8))]);
+subplot(3,1,2)
+colormap gray;
+imagesc(1+log(abs(Inew5_9)));
+title(['Figure 9 freq ',num2str(glfp_fc(9))]);
+subplot(3,1,3)
+colormap gray;
+imagesc(1+log(abs(Inew5_10)));
+title(['Figure 10 freq ',num2str(glfp_fc(10))]);
+
+figure;
+imshow('message.jpg');
+
+
+handles.datauser.Inew5_1=Inew5_1;
+handles.datauser.Inew5_2=Inew5_2;
+handles.datauser.Inew5_3=Inew5_3;
+handles.datauser.Inew5_4=Inew5_4;
+handles.datauser.Inew5_4=Inew5_4;
+handles.datauser.Inew5_5=Inew5_5;
+handles.datauser.Inew5_6=Inew5_6;
+handles.datauser.Inew5_7=Inew5_7;
+handles.datauser.Inew5_8=Inew5_8;
+handles.datauser.Inew5_9=Inew5_9;
+handles.datauser.Inew5_10=Inew5_10;
+% open('message.fig');
+% pause(5);
+
+guidata(hObject,handles);
+
+
+
+function gaussChoiceNum_Callback(hObject, eventdata, handles)
+% hObject    handle to gaussChoiceNum (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of gaussChoiceNum as text
+%        str2double(get(hObject,'String')) returns contents of gaussChoiceNum as a double
+% close all;
+
+% --- Executes during object creation, after setting all properties.
+function gaussChoiceNum_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to gaussChoiceNum (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on button press in gaussChoiceButton.
+function gaussChoiceButton_Callback(hObject, eventdata, handles)
+% hObject    handle to gaussChoiceButton (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+%close all;
+guidata(hObject, handles);
+numFig=get(handles.gaussChoiceNum,'Value');
+if numFig==1
+    Inew5=handles.datauser.Inew5_1;
+elseif numFig==2
+    Inew5=handles.datauser.Inew5_2;
+elseif numFig==3
+    Inew5=handles.datauser.Inew5_3;
+elseif numFig==4
+    Inew5=handles.datauser.Inew5_4;
+elseif numFig==5
+    Inew5=handles.datauser.Inew5_5;
+elseif numFig==6
+    Inew5=handles.datauser.Inew3_6;
+elseif numFig==7
+    Inew5=handles.datauser.Inew5_7;
+elseif numFig==8
+    Inew5=handles.datauser.Inew5_8;
+elseif numFig==9
+    Inew5=handles.datauser.Inew5_9;
+elseif numFig==10
+    Inew5=handles.datauser.Inew5_10;
+else
+    disp('please entre the correct number of figure');
+end
+
+%%% padding the edges of image
+Inew5=uint8(real(Inew5)); 
+resIauto=paddingEdge(Inew5);
+
+close Figure 1; close Figure 2;
+close Figure 3; close Figure 4;
+close Figure 5; close Figure 6; 
+% close Figure 7; close Figure 8;
+% close Figure 9; close Figure 10; close Figure 11;
+
+figure;
+colormap gray;
+imagesc(resIauto);
+title('result automatique with gauss filter');
+%title(['result automatique with gauss filter'],num2str(glfp_fc(numFig)));
+
+
+% --- Executes on button press in runNextButton.
+function runNextButton_Callback(hObject, eventdata, handles)
+% hObject    handle to runNextButton (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+delete(gcf)
+open('mainOperations.fig');
